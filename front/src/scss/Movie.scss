@@ -1,0 +1,13 @@
+.cardMovie {
+  width: 15rem;
+  border: none !important;
+
+  img{
+    height: 350px;
+  }
+
+  .card-text,
+  .list-group-item {
+    font-size: 12px;
+  }
+}
