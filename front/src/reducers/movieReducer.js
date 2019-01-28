@@ -4,13 +4,15 @@ import {
   GET_MOVIE_BY_CATEGORY,
   GET_MOVIE_BY_NAME,
   DELETE_MOVIE,
-  GET_RANDOM_MOVIE
+  GET_RANDOM_MOVIE,
+  GET_POSTER_MOVIE
 } from "../actions/types";
 
 const initialState = {
   moviesList: [],
   categoriesList: [],
   movieByCategory: [],
+  posterMovie: {}
 };
 
 export default function(state = initialState, action) {
@@ -39,6 +41,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         moviesList: action.getRandomMovie
+      };
+    case GET_POSTER_MOVIE:
+      return {
+        ...state,
+        posterMovie: action.getPosterMovie
       };
     case DELETE_MOVIE:
       return {

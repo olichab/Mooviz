@@ -19,7 +19,7 @@ class Movies extends Component {
         <div className="row justify-content-center">
           {moviesList.length ? (
             moviesList.map(e => (
-              <div key={e.id_movie} className="col col-md-4 col-lg-3 mb-4">
+              <div key={e.id_movie} className="col col-md-4 col-lg-3 mb-4 d-flex justify-content-center">
                 <Movie data={e} />
               </div>
             ))

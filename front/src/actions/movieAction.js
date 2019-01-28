@@ -5,10 +5,12 @@ import {
   DELETE_MOVIE,
   GET_MOVIE_BY_CATEGORY,
   GET_RANDOM_MOVIE,
-  GET_MOVIE_BY_NAME
+  GET_MOVIE_BY_NAME,
+  GET_POSTER_MOVIE
 } from "./types";
 
 const domain = process.env.REACT_APP_DOMAIN_NAME;
+const apiKey = process.env.REACT_APP_API_MOVIEDB;
 
 export const getMoviesList = () => dispatch => {
   const url = `${domain}/movies`;
@@ -56,6 +58,18 @@ export const getMovieByCategory = category => dispatch => {
     dispatch({
       type: GET_MOVIE_BY_CATEGORY,
       getMovieByCategory: res.data
+    });
+  });
+};
+
+export const getPosterFilm = name => dispatch => {
+  console.log("nameAPI",name);
+
+  const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${name}`;
+  axios.get(url).then(res => {
+    dispatch({
+      type: GET_POSTER_MOVIE,
+      getPosterMovie: res.data
     });
   });
 };
