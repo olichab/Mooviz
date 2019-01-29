@@ -26,6 +26,7 @@ state={
   };
 
   handeChange = e => {
+    this.props.handleSearchMovie(e.target.value)
     this.setState({
       searchName: e.target.value
     })
