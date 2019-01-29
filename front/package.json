@@ -5,10 +5,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "4.2.1",
+    "dateformat": "^3.0.3",
     "dot-env": "0.0.1",
     "jquery": "^3.3.1",
     "node-sass": "^4.11.0",
-    "popper": "^1.0.1",
+    "popper.js": "^1.14.7",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",

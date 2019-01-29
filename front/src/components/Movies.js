@@ -5,7 +5,7 @@ import { getMoviesList } from "../actions/movieAction";
 
 import Movie from "./Movie";
 
-import "../scss/Movies.scss"
+import "../scss/Movies.scss";
 
 class Movies extends Component {
   componentDidMount() {
@@ -13,21 +13,31 @@ class Movies extends Component {
   }
 
   render() {
-    const { moviesList } = this.props;
+    const { moviesList, nameMovieSearch } = this.props;
+
     return (
       <div className="Movies container">
-        <div className="row justify-content-center">
-          {moviesList.length ? (
-            moviesList.map(e => (
-              <div key={e.id_movie} className="col col-md-4 col-lg-3 mb-4">
-                <Movie data={e} />
+        <div className="accordion" id="accordionExample">
+          <div className="row justify-content-center">
+            {moviesList.length ? (
+              moviesList
+                .filter(e =>
+                  e.name.toLowerCase().includes(nameMovieSearch.toLowerCase())
+                )
+                .map(e => (
+                  <div
+                    key={e.id_movie}
+                    className="col col-md-4 col-lg-3 mb-4 d-flex justify-content-center"
+                  >
+                    <Movie data={e} />
+                  </div>
+                ))
+            ) : (
+              <div>
+                <p>No film corresponds to your search</p>
               </div>
-            ))
-          ) : (
-            <div>
-              <p>No film corresponds to your search</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );

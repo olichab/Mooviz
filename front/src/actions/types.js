@@ -4,4 +4,8 @@ export const GET_MOVIE_BY_CATEGORY = "GET_MOVIE_BY_CATEGORY";
 export const DELETE_MOVIE = "DELETE_MOVIE";
 export const GET_RANDOM_MOVIE = "GET_RANDOM_MOVIE";
 export const GET_MOVIE_BY_NAME = "GET_MOVIE_BY_NAME";
+export const GET_POSTER_MOVIE = "GET_POSTER_MOVIE";
+export const GET_INFOS_MOVIE = "GET_INFOS_MOVIE";
+export const ADD_MOVIE = "ADD_MOVIE";
+
 

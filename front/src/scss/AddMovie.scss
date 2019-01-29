@@ -1,6 +1,16 @@
 .AddMovie {
   color: #FFF;
 
+  .poster-movies-container {
+    max-height: 300px;
+    overflow: scroll;
+
+  }
+
+  .poster-movie {
+    height: 150px;
+  }
+
   textarea {
     resize: none;
   }

@@ -5,7 +5,7 @@ const connection = require("../config.js");
 // List of all movie
 // Ex: http://localhost:3001/movies
 router.get("/", function(req, res, next) {
-  const sql = `SELECT * FROM Movie m, Category c WHERE m.id_category=c.id_category AND m.is_active=1`;
+  const sql = `SELECT * FROM Movie m, Category c WHERE m.id_category=c.id_category AND m.is_active=1 ORDER BY m.release_date ASC`;
   connection.query(sql, (error, results) => {
     if (error) res.status(500).send(error);
     else res.status(200).send(results);
@@ -13,11 +13,12 @@ router.get("/", function(req, res, next) {
 });
 
 // List film by name
-// Ex: http://localhost:3001/movies/:name
+// Ex: http://localhost:3001/movies/movie/:name
 router.get("/movie/:name", function(req, res, next) {
   const nameMovie = req.params.name;
-  // const sql = `SELECT * FROM Movie m,Category c WHERE m.id_category=c.id_category AND m.name=?`;
-  const sql = 'SELECT * FROM Movie m,Category c WHERE m.id_category=c.id_category AND m.name LIKE'+ connection.escape('%'+nameMovie+'%');
+  const sql =
+    "SELECT * FROM Movie m,Category c WHERE m.id_category=c.id_category AND m.name LIKE" +
+    connection.escape("%" + nameMovie + "%");
   connection.query(sql, nameMovie, (error, results) => {
     if (error) res.status(500).send(error);
     else res.status(200).send(results);
@@ -34,7 +35,6 @@ router.get("/random", function(req, res, next) {
   });
 });
 
-
 // Delete a movie
 // Ex: http://localhost:3001/movies/deletemovie/:id
 router.put("/deletemovie/:id", function(req, res, next) {
@@ -46,30 +46,39 @@ router.put("/deletemovie/:id", function(req, res, next) {
   });
 });
 
-// Create new movie
+// Add new movie
 // http://localhost:3001/movies/newmovie
 router.post("/newmovie", function(req, res, next) {
-  // const { name, lastname, age } = req.body;
   const name = req.body.name;
   const director = req.body.director;
-  const synopsis = req.body.director;
+  const synopsis = req.body.synopsis;
   const link_poster = req.body.link_poster;
   const release_date = req.body.release_date;
   const duration = req.body.duration;
+  const category = req.body.category;
+  console.log("cat:", category);
   const is_active = 1;
-  const dataForm = [
-    name,
-    director,
-    synopsis,
-    link_poster,
-    release_date,
-    duration,
-    is_active
-  ];
-  const sql = `INSERT INTO movie (name, director, synopsis,link_poster,release_date,duration,is_active) VALUES (?,?,?,?,?,?,?)`;
-  connection.query(sql, dataForm, error => {
+
+  const sql = `SELECT id_category FROM Category WHERE name_category=?`;
+  connection.query(sql, category, (error, results) => {
     if (error) res.status(500).send(error);
-    else res.status(201).send("La personne à bien été ajouté");
+    else {
+      const dataForm = [
+        name,
+        director,
+        synopsis,
+        link_poster,
+        release_date,
+        duration,
+        is_active,
+        id_category = results[0].id_category
+      ];
+      const sql2 = `INSERT INTO movie (name, director, synopsis,link_poster,release_date,duration,is_active, id_category) VALUES (?,?,?,?,?,?,?,?)`;
+      connection.query(sql2, dataForm, error => {
+        if (error) res.status(500).send(error);
+        else res.status(201).send("Le film à bien été ajouté");
+      });
+    }
   });
 });
 
