@@ -77,6 +77,7 @@ export const getPosterMovie = name => dispatch => {
 export const getInfosMovie = id => dispatch => {
   const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&append_to_response=credits`;
   axios.get(url).then(res => {
+    console.log('yolo',res)
     dispatch({
       type: GET_INFOS_MOVIE,
       getInfosMovie: res.data
@@ -125,37 +126,3 @@ export const deleteMovie = idMovie => dispatch => {
     });
   });
 };
-
-// export const postNewOffer = values => dispatch => {
-//   const { title, contract_type, place, description, is_published } = values;
-//   const questionsList = [];
-//   for (let prop in values) {
-//     if (prop.includes("question") && values[prop]) {
-//       questionsList.push(prop.substr(8));
-//     }
-//   }
-//   const body = {
-//     title,
-//     contract_type,
-//     place,
-//     description,
-//     is_published
-//   };
-//   const url = `${domain}api/offers?questions=${questionsList}`;
-//   axios({
-//     method: "POST",
-//     url,
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     },
-//     data: body
-//   })
-//     .then(() => {
-//       dispatch({
-//         type: POST_NEW_OFFER
-//       });
-//     })
-//     .catch(err => {
-//       throw err;
-//     });
-// };

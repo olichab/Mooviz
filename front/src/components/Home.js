@@ -12,7 +12,7 @@ export default class Home extends Component {
   render() {
     const { nameMovieSearch } = this.state;
     return (
-      <div className="container-fluid">
+      <div>
         <SearchPart handleSearchMovie={this.handleSearchMovie} />
         <Movies nameMovieSearch={nameMovieSearch} />
       </div>

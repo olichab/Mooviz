@@ -1,3 +1,10 @@
 .Header {
+  .navbar {
+    background: #7db9e8;
+    background: -moz-linear-gradient(bottom, #7db9e8 0%, #207cca 49%, #1e5799 100%);
+    background: -webkit-linear-gradient(bottom, #7db9e8 0%, #207cca 49%, #1e5799 100%);
+    background: linear-gradient(to top, #7db9e8 0%, #207cca 49%, #1e5799 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db9e8', endColorstr='#1e5799', GradientType=0);
+  }
 
 }

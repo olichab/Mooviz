@@ -1,4 +1,14 @@
-.Footer{
-  background-color: #FFF;
+.Footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #7db9e8;
+  background: -moz-linear-gradient(top, #7db9e8 0%, #207cca 49%, #1e5799 100%);
+  background: -webkit-linear-gradient(top, #7db9e8 0%, #207cca 49%, #1e5799 100%);
+  background: linear-gradient(to bottom, #7db9e8 0%, #207cca 49%, #1e5799 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7db9e8', endColorstr='#1e5799', GradientType=0);
   min-height: 5vh;
+  color: #FFF;
 }

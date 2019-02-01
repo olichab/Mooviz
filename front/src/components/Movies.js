@@ -27,7 +27,7 @@ class Movies extends Component {
                 .map(e => (
                   <div
                     key={e.id_movie}
-                    className="col col-md-4 col-lg-3 mb-4 d-flex justify-content-center"
+                    className="col-6 col-md-3 col-lg-2 mb-4 d-flex justify-content-center"
                   >
                     <Movie data={e} />
                   </div>

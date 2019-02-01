@@ -12,9 +12,9 @@ import {
 import "../scss/SearchPart.scss";
 
 class SearchPart extends Component {
-state={
-  searchName: ""
-}
+  state = {
+    searchName: ""
+  };
 
   componentDidMount() {
     this.props.getCategoriesList();
@@ -22,15 +22,20 @@ state={
 
   handleSortByCategory = e => {
     const category = e.target.value;
-    this.props.getMovieByCategory(category);
+
+    if (category==="Choose a category...") {
+      this.handleShowAllMovies();
+    } else {
+      this.props.getMovieByCategory(category);
+    }
   };
 
   handeChange = e => {
-    this.props.handleSearchMovie(e.target.value)
+    this.props.handleSearchMovie(e.target.value);
     this.setState({
       searchName: e.target.value
-    })
-  }
+    });
+  };
 
   handleSortByName = e => {
     e.preventDefault();
