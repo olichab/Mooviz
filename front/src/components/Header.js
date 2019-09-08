@@ -23,7 +23,7 @@ class Header extends Component {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <div
+          {/* <div
             className="collapse navbar-collapse justify-content-end"
             id="navbarNavAltMarkup"
           >
@@ -31,11 +31,11 @@ class Header extends Component {
               <a className="nav-item nav-link active" href="/">
                 Home <span className="sr-only">(current)</span>
               </a>
-              {/* <a className="nav-item nav-link" href="/addMovie">
+              <a className="nav-item nav-link" href="/addMovie">
                 Add movie
-              </a> */}
+              </a>
             </div>
-          </div>
+          </div> */}
         </nav>
       </div>
     );

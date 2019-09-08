@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faRandom } from "@fortawesome/free-solid-svg-icons";
 
 import {
   getCategoriesList,
@@ -104,7 +104,7 @@ class SearchPart extends Component {
     return (
       <div className="SearchPart container-fluid">
         <div className="row justify-content-center mt-3 mb-3">
-          <div className="col col-md-8 col-lg-6">
+          <div className="col col-md-9 col-lg-6">
             <form onSubmit={this.handleSortByName}>
               <div className="input-group flex-nowrap">
                 <input
@@ -161,35 +161,21 @@ class SearchPart extends Component {
             </div>
           )}
         </div>
-        <div className="container- mt-4">
+        <div className="container- mt-3">
           <div className="row justify-content-center align-items-center" />
-          <button type="button" className="btn btnAddMovie" onClick={this.a}>
+          <button type="button" className="btn btnAddMovie m-2" onClick={this.a}>
             <div className="d-inline p-1">
               <FontAwesomeIcon icon={faPlus} className="iconBrown" />
             </div>
             <p className="d-inline p-1">ADD A MOVIE</p>
           </button>
-        </div>
-        {/* <div className="row justify-content-center m-2">
-            <div className="col col-md-6 align-center">
-              <div className="input-group-append">
-                <button
-                  className="btn btn-outline-secondary btnRandom"
-                  type="button"
-                  onClick={this.handleShowRandomMovie}
-                >
-                  Random movie
-                </button>
-                <button
-                  className="btn btn-outline-secondary btnRandom"
-                  type="button"
-                  onClick={this.handleShowAllMovies}
-                >
-                  Complete collection
-                </button>
-              </div>
+          <button type="button" className="btn btnAddMovie m-2" onClick={this.handleShowRandomMovie}>
+            <div className="d-inline p-1">
+              <FontAwesomeIcon icon={faRandom} className="iconBrown" />
             </div>
-          </div> */}
+            <p className="d-inline p-1">RANDOM MOVIE</p>
+          </button>
+        </div>
       </div>
     );
   }

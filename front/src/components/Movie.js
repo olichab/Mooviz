@@ -2,65 +2,29 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import dateFormat from "dateformat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrashAlt,
+  faChevronLeft,
+  faChevronRight,
+  faTimesCircle
+} from "@fortawesome/free-solid-svg-icons";
 
 import { deleteMovie } from "../actions/movieAction";
 
 import "../scss/Movie.scss";
 
-dateFormat.i18n = {
-  dayNames: [
-    "Dim",
-    "Lun",
-    "Mar",
-    "Mer",
-    "Jeu",
-    "Ven",
-    "Sam",
-    "dimanche",
-    "lundi",
-    "mardi",
-    "mercredi",
-    "jeudi",
-    "vendredi",
-    "samedi"
-  ],
-  monthNames: [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Avr",
-    "Mai",
-    "Jun",
-    "Jul",
-    "Aut",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-    "janvier",
-    "février",
-    "mars",
-    "avril",
-    "mai",
-    "juin",
-    "juillet",
-    "août",
-    "septembre",
-    "octobre",
-    "novembre",
-    "décembre"
-  ],
-  timeNames: ["a", "p", "am", "pm", "A", "P", "AM", "PM"]
-};
-
 class Movie extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showMore: false
+    state = {
+      showMore: false,
+      classShowCard: ""
     };
-  }
+
+  handleSeeMore = () => {
+    const { showMore } = this.state;
+    this.setState({
+      showMore: !showMore
+    });
+  };
 
   handleDeleteMovie = () => {
     const { data } = this.props;
@@ -68,16 +32,23 @@ class Movie extends Component {
     window.location.reload();
   };
 
-  handleMore = () => {
-    const { showMore } = this.state;
+  handleOpenCard = () => {
     this.setState({
-      showMore: !showMore
+      classShowCard: ""
     });
   };
 
+  handleCloseCard = () => {
+    this.setState({
+      showMore: false,
+      classShowCard: "hide"
+    });
+  };
+
+
   render() {
     const { data } = this.props;
-    const { showMore } = this.state;
+    const { showMore, classShowCard } = this.state;
 
     return (
       <div>
@@ -91,19 +62,19 @@ class Movie extends Component {
               data-target={`#A${data.id_movie}`}
               aria-controls={`#A${data.id_movie}`}
               aria-expanded="true"
+              onClick={this.handleOpenCard}
             />
           )}
         </div>
         {data && (
           <div
-            className="collapse card-info"
+            className={`collapse card-info ${classShowCard}`}
             id={`A${data.id_movie}`}
             aria-labelledby={`A${data.id_movie}`}
             data-parent="#accordionExample"
           >
             <div className="card-body justify-content-center">
               <h5 className="card-title">{data.name}</h5>
-
               {!showMore && <p className="card-text h-75">{data.synopsis}</p>}
               {showMore && (
                 <ul className="list-group list-group-flush h-75 card-text">
@@ -130,29 +101,51 @@ class Movie extends Component {
               )}
 
               <div className="row cardButton">
-                <div className="col-6">
+                <div className="col-4">
                   {!showMore && (
                     <button
                       type="button"
                       className="btn"
-                      onClick={this.handleMore}
+                      onClick={this.handleSeeMore}
                     >
-                      <FontAwesomeIcon icon={faChevronRight} className="iconBrown" />
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="iconBrown"
+                      />
                     </button>
                   )}
                   {showMore && (
                     <button
                       type="button"
                       className="btn"
-                      onClick={this.handleMore}
+                      onClick={this.handleSeeMore}
                     >
-                      <FontAwesomeIcon icon={faChevronLeft} className="iconBrown" />
+                      <FontAwesomeIcon
+                        icon={faChevronLeft}
+                        className="iconBrown"
+                      />
                     </button>
                   )}
                 </div>
-                <div className="col-6">
-                  <button type="button" className="btn" onClick={this.handleDeleteMovie}>
+                <div className="col-4">
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={this.handleDeleteMovie}
+                  >
                     <FontAwesomeIcon icon={faTrashAlt} className="iconRed" />
+                  </button>
+                </div>
+                <div className="col-4">
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={this.handleCloseCard}
+                  >
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      className="iconBrown"
+                    />
                   </button>
                 </div>
               </div>

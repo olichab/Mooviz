@@ -21,7 +21,7 @@ class Movies extends Component {
           <h3>My collection</h3>
         </div>
         <div className="accordion" id="accordionExample">
-          <div className="row d-flex justify-content-center">
+          <div className="row d-flex justify-content-center mb-4 mt-4">
             {moviesList.length ? (
               moviesList
                 .filter(movie =>
