@@ -1,7 +1,9 @@
 import axios from "axios";
 import {
   GET_MOVIES_LIST,
+  CLEAR_MOVIES_LIST,
   GET_CATEGORIES_LIST,
+  GET_CATEGORIES_CHOOSE,
   DELETE_MOVIE,
   GET_MOVIE_BY_CATEGORY,
   GET_RANDOM_MOVIE,
@@ -24,6 +26,13 @@ export const getMoviesList = () => dispatch => {
   });
 };
 
+export const clearMoviesList = () => dispatch => {
+  dispatch({
+    type: CLEAR_MOVIES_LIST,
+    clearMoviesList: []
+  });
+};
+
 export const getRandomMovie = () => dispatch => {
   const url = `${domain}/movies/random`;
   axios.get(url).then(res => {
@@ -39,7 +48,8 @@ export const getCategoriesList = () => dispatch => {
   axios.get(url).then(res => {
     dispatch({
       type: GET_CATEGORIES_LIST,
-      getCategoriesList: res.data
+      getCategoriesList: res.data.map(n =>
+        n.name_category)
     });
   });
 };
@@ -54,8 +64,8 @@ export const getMovieByName = nameMovie => dispatch => {
   });
 };
 
-export const getMovieByCategory = category => dispatch => {
-  const url = `${domain}/categories/${category}`;
+export const getMovieByCategory = categories => dispatch => {
+  const url = `${domain}/categories/${categories}`;
   axios.get(url).then(res => {
     dispatch({
       type: GET_MOVIE_BY_CATEGORY,
@@ -77,7 +87,6 @@ export const getPosterMovie = name => dispatch => {
 export const getInfosMovie = id => dispatch => {
   const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&append_to_response=credits`;
   axios.get(url).then(res => {
-    console.log('yolo',res)
     dispatch({
       type: GET_INFOS_MOVIE,
       getInfosMovie: res.data
@@ -95,7 +104,6 @@ export const addMovie = state => dispatch => {
     duration,
     category
   } = state;
-  console.log("state:", state);
 
   const url = `${domain}/movies/newmovie`;
   const body = {

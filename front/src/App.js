@@ -6,7 +6,7 @@ import Home from "./components/Home";
 import AddMovie from "./components/AddMovie";
 import Footer from "./components/Footer";
 
-import "./App.css";
+import "./App.scss";
 
 class App extends Component {
   render() {

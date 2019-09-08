@@ -1,5 +1,64 @@
-.SearchPart{
-  .btnRandom{
-    color: #FFF;
+@import "./helpers/colors";
+@import "./helpers/media.scss";
+
+.SearchPart {
+  position: relative;
+  padding: 80px 0 30px 0;
+  .searchBarFilm,
+  .searchBarFilm:focus {
+    height: 60px !important;
+    background-color: $white;
+    font-size: 22px;
+    color: $brown;
+    border: none;
+    border-radius: 1px;
+    box-shadow: none;
+    &::placeholder {
+      color: $brown;
+    }
   }
+
+  .containerLabelCategory {
+    margin: auto;
+
+    .labelCategoryActive {
+      cursor: pointer;
+      padding: 5px 7px 5px 7px;
+      font-size: 12px;
+      font-weight: 500;
+      color: $brown;
+      background-color: $white;
+      border-radius: 5px !important;
+    }
+    .inactive {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    // MEDIA-QUERIES
+    @include sm {
+      width: 100%;
+    }
+    @include md {
+      width: 70%;
+    }
+    @include lg {
+      width: 40%;
+    }
+  }
+
+  .btnAddMovie {
+    width: auto;
+    background-color: $white;
+    color: $brown;
+    font-size: 14px;
+    font-weight: 600;
+    .iconBrown {
+      color: $brown;
+    }
+  }
+}
+
+.btnRandom {
+  color: $white;
 }

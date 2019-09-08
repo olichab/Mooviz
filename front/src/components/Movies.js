@@ -16,25 +16,32 @@ class Movies extends Component {
     const { moviesList, nameMovieSearch } = this.props;
 
     return (
-      <div className="Movies container">
+      <div className="Movies container-fluid">
+        <div className="row ml-2 titleCollection">
+          <h3>My collection</h3>
+        </div>
         <div className="accordion" id="accordionExample">
-          <div className="row justify-content-center">
+          <div className="row d-flex justify-content-center">
             {moviesList.length ? (
               moviesList
-                .filter(e =>
-                  e.name.toLowerCase().includes(nameMovieSearch.toLowerCase())
+                .filter(movie =>
+                  movie.name
+                    .toLowerCase()
+                    .includes(nameMovieSearch.toLowerCase())
                 )
-                .map(e => (
+                .map(movie => (
                   <div
-                    key={e.id_movie}
-                    className="col-6 col-md-3 col-lg-2 mb-4 d-flex justify-content-center"
+                    key={movie.id_movie}
+                    className="col-12 col-sm-6 col-md-3 col-lg-2  cardMovie"
                   >
-                    <Movie data={e} />
+                    <Movie data={movie} />
                   </div>
                 ))
             ) : (
               <div>
-                <p>No film corresponds to your search</p>
+                <p className="noMovieMessage m-4">
+                  No film corresponds to your search
+                </p>
               </div>
             )}
           </div>
