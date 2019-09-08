@@ -1,0 +1,17 @@
+@import "./scss/helpers/colors.scss";
+
+html {
+    height: 100%;
+    width:100%;
+}
+
+.App {
+  text-align: center;
+  background-color: $brown;
+  position: relative;
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin: 0;
+  padding-bottom: 50px;
+}
+
