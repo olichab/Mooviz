@@ -71,7 +71,7 @@ class Movie extends Component {
             className={`collapse card-info ${classShowCard}`}
             id={`A${data.id_movie}`}
             aria-labelledby={`A${data.id_movie}`}
-            data-parent="#accordionExample"
+            data-parent="#accordionMovie"
           >
             <div className="card-body justify-content-center">
               <h5 className="card-title">{data.name}</h5>

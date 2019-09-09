@@ -10,66 +10,60 @@ import {
   getMoviesList,
   clearMoviesList,
   getRandomMovie,
-  getMovieByName
+  searchMovieInCollection
 } from "../actions/movieAction";
 
 import "../scss/SearchPart.scss";
 
 class SearchPart extends Component {
   state = {
-    searchName: "",
     categoriesSelect: []
   };
 
   componentDidMount() {
-    this.props.getCategoriesList();
+    const { getCategoriesList, } = this.props;
+    getCategoriesList();
   }
 
-  handeChangeSearch = e => {
-    this.props.handleSearchMovie(e.target.value);
-    this.setState({
-      searchName: e.target.value
-    });
-  };
-
-  handleSortByName = e => {
-    e.preventDefault();
-    const name = this.state.searchName;
-    this.props.getMovieByName(name);
+  handeSearchMovieInCollection = e => {
+    const { searchMovieInCollection, } = this.props;
+    searchMovieInCollection(e.target.value);
   };
 
   handleShowAllMovies = () => {
-    this.props.getMoviesList();
+    const { getMoviesList, } = this.props;
+    getMoviesList();
     this.setState({
       categoriesSelect: []
     });
   };
 
   handleClearMoviesList = () => {
-    this.props.clearMoviesList();
-
+    const { clearMoviesList } = this.props;
+    clearMoviesList();
     this.setState({
       categoriesSelect: this.props.categoriesList
     });
   };
 
   handleShowRandomMovie = () => {
-    this.props.getRandomMovie();
+    const { getRandomMovie } = this.props;
+    getRandomMovie();
   };
 
   toggleLabelCategory = (e, nameCategory, index) => {
-    const { categoriesList } = this.props;
+    const { categoriesList, getMovieByCategory } = this.props;
     const { categoriesSelect } = this.state;
 
     const filteredMovieByCategory = () => {
-      this.props.getMovieByCategory(
+      getMovieByCategory(
         categoriesList.filter(cat => !this.state.categoriesSelect.includes(cat))
       );
     };
 
     // Get movie by categories selected
+    // if nameCategory is in categoriesSelect, filter array
     if (categoriesSelect.indexOf(nameCategory) > -1) {
-      // if nameCategory is in categoriesSelect, filter array
       this.setState(
         {
           categoriesSelect: categoriesSelect.filter(name => {
@@ -105,7 +99,6 @@ class SearchPart extends Component {
       <div className="SearchPart container-fluid">
         <div className="row justify-content-center mt-3 mb-3">
           <div className="col col-md-9 col-lg-6">
-            <form onSubmit={this.handleSortByName}>
               <div className="input-group flex-nowrap">
                 <input
                   type="text"
@@ -113,11 +106,10 @@ class SearchPart extends Component {
                   placeholder="Search a film"
                   aria-label="film name"
                   aria-describedby="addon-wrapping"
-                  onChange={this.handeChangeSearch}
-                  value={this.state.searchName}
+                  onChange={this.handeSearchMovieInCollection}
+                  // value={this.state.searchName}
                 />
               </div>
-            </form>
           </div>
         </div>
         <div className="row justify-content-center containerLabelCategory">
@@ -163,13 +155,21 @@ class SearchPart extends Component {
         </div>
         <div className="container- mt-3">
           <div className="row justify-content-center align-items-center" />
-          <button type="button" className="btn btnAddMovie m-2" onClick={this.a}>
+          <button
+            type="button"
+            className="btn btnAddMovie m-2"
+            onClick={this.a}
+          >
             <div className="d-inline p-1">
               <FontAwesomeIcon icon={faPlus} className="iconBrown" />
             </div>
             <p className="d-inline p-1">ADD A MOVIE</p>
           </button>
-          <button type="button" className="btn btnAddMovie m-2" onClick={this.handleShowRandomMovie}>
+          <button
+            type="button"
+            className="btn btnAddMovie m-2"
+            onClick={this.handleShowRandomMovie}
+          >
             <div className="d-inline p-1">
               <FontAwesomeIcon icon={faRandom} className="iconBrown" />
             </div>
@@ -192,9 +192,9 @@ export default connect(
   {
     getCategoriesList,
     getMovieByCategory,
-    getMovieByName,
     getMoviesList,
     clearMoviesList,
-    getRandomMovie
+    getRandomMovie,
+    searchMovieInCollection
   }
 )(SearchPart);

@@ -18,7 +18,7 @@ router.get("/:category", function(req, res, next) {
   const nameCategory = req.params.category;
 
   const sql =
-    "SELECT * FROM Movie m,Category c WHERE m.id_category=c.id_category AND c.name_category IN (" +
+    "SELECT * FROM Movie m,Category c WHERE m.id_category=c.id_category AND m.is_active=1 AND c.name_category IN (" +
     connection.escape(nameCategory.split(","))+") ORDER BY m.name ASC";
 
   connection.query(sql, nameCategory, (error, results) => {

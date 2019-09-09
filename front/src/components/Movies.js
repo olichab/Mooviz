@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { getMoviesList } from "../actions/movieAction";
+import { getMoviesList, searchMovieInCollection } from "../actions/movieAction";
 
 import Movie from "./Movie";
 
@@ -9,7 +9,8 @@ import "../scss/Movies.scss";
 
 class Movies extends Component {
   componentDidMount() {
-    this.props.getMoviesList();
+    const { getMoviesList } = this.props;
+    getMoviesList();
   }
 
   render() {
@@ -20,7 +21,7 @@ class Movies extends Component {
         <div className="row ml-2 titleCollection">
           <h3>My collection</h3>
         </div>
-        <div className="accordion" id="accordionExample">
+        <div className="accordion" id="accordionMovie">
           <div className="row d-flex justify-content-center mb-4 mt-4">
             {moviesList.length ? (
               moviesList
@@ -32,7 +33,7 @@ class Movies extends Component {
                 .map(movie => (
                   <div
                     key={movie.id_movie}
-                    className="col-12 col-sm-6 col-md-3 col-lg-2  cardMovie"
+                    className="col-12 col-sm-6 col-md-3 col-lg-2 cardMovie"
                   >
                     <Movie data={movie} />
                   </div>
@@ -52,10 +53,11 @@ class Movies extends Component {
 }
 
 const mapStateToProps = state => ({
-  moviesList: state.movieReducer.moviesList
+  moviesList: state.movieReducer.moviesList,
+  nameMovieSearch: state.movieReducer.nameMovieSearch
 });
 
 export default connect(
   mapStateToProps,
-  { getMoviesList }
+  { getMoviesList, searchMovieInCollection }
 )(Movies);

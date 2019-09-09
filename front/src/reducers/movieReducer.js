@@ -3,12 +3,12 @@ import {
   CLEAR_MOVIES_LIST,
   GET_CATEGORIES_LIST,
   GET_MOVIE_BY_CATEGORY,
-  GET_MOVIE_BY_NAME,
-  DELETE_MOVIE,
   GET_RANDOM_MOVIE,
   GET_POSTER_MOVIE,
   GET_INFOS_MOVIE,
-  ADD_MOVIE
+  ADD_MOVIE,
+  DELETE_MOVIE,
+  SEARCH_MOVIE_IN_COLLECTION
 } from "../actions/types";
 
 const initialState = {
@@ -16,7 +16,8 @@ const initialState = {
   categoriesList: [],
   movieByCategory: [],
   posterMovie: {},
-  infosMovie: {}
+  infosMovie: {},
+  nameMovieSearch: ""
 };
 
 export default function(state = initialState, action) {
@@ -34,17 +35,12 @@ export default function(state = initialState, action) {
     case GET_CATEGORIES_LIST:
       return {
         ...state,
-        categoriesList: action.getCategoriesList
+        categoriesList: action.getCategoriesList.map(n => n.name_category)
       };
     case GET_MOVIE_BY_CATEGORY:
       return {
         ...state,
         moviesList: action.getMovieByCategory
-      };
-    case GET_MOVIE_BY_NAME:
-      return {
-        ...state,
-        moviesList: action.getMovieByName
       };
     case GET_RANDOM_MOVIE:
       return {
@@ -68,6 +64,11 @@ export default function(state = initialState, action) {
     case DELETE_MOVIE:
       return {
         ...state
+      };
+    case SEARCH_MOVIE_IN_COLLECTION:
+      return {
+        ...state,
+        nameMovieSearch: action.nameMovieSearch
       };
     default:
       return state;

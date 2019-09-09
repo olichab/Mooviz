@@ -3,14 +3,13 @@ import {
   GET_MOVIES_LIST,
   CLEAR_MOVIES_LIST,
   GET_CATEGORIES_LIST,
-  GET_CATEGORIES_CHOOSE,
-  DELETE_MOVIE,
   GET_MOVIE_BY_CATEGORY,
   GET_RANDOM_MOVIE,
-  GET_MOVIE_BY_NAME,
   GET_POSTER_MOVIE,
   GET_INFOS_MOVIE,
-  ADD_MOVIE
+  ADD_MOVIE,
+  DELETE_MOVIE,
+  SEARCH_MOVIE_IN_COLLECTION
 } from "./types";
 
 const domain = process.env.REACT_APP_DOMAIN_NAME;
@@ -48,18 +47,7 @@ export const getCategoriesList = () => dispatch => {
   axios.get(url).then(res => {
     dispatch({
       type: GET_CATEGORIES_LIST,
-      getCategoriesList: res.data.map(n =>
-        n.name_category)
-    });
-  });
-};
-
-export const getMovieByName = nameMovie => dispatch => {
-  const url = `${domain}/movies/movie/${nameMovie}`;
-  axios.get(url).then(res => {
-    dispatch({
-      type: GET_MOVIE_BY_NAME,
-      getMovieByName: res.data
+      getCategoriesList: res.data
     });
   });
 };
@@ -133,4 +121,11 @@ export const deleteMovie = idMovie => dispatch => {
       type: DELETE_MOVIE
     });
   });
+};
+
+export const searchMovieInCollection = (nameMovieSearch) => dispatch => {
+    dispatch({
+      type: SEARCH_MOVIE_IN_COLLECTION,
+      nameMovieSearch: nameMovieSearch
+    });
 };
