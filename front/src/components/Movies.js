@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { getMoviesList } from "../actions/movieAction";
+import { getMoviesList, searchMovieInCollection } from "../actions/movieAction";
 
 import Movie from "./Movie";
 
@@ -9,32 +9,40 @@ import "../scss/Movies.scss";
 
 class Movies extends Component {
   componentDidMount() {
-    this.props.getMoviesList();
+    const { getMoviesList } = this.props;
+    getMoviesList();
   }
 
   render() {
     const { moviesList, nameMovieSearch } = this.props;
 
     return (
-      <div className="Movies container">
-        <div className="accordion" id="accordionExample">
-          <div className="row justify-content-center">
+      <div className="Movies container-fluid">
+        <div className="row ml-2 titleCollection">
+          <h3>My collection</h3>
+        </div>
+        <div className="accordion" id="accordionMovie">
+          <div className="row d-flex justify-content-center mb-4 mt-4">
             {moviesList.length ? (
               moviesList
-                .filter(e =>
-                  e.name.toLowerCase().includes(nameMovieSearch.toLowerCase())
+                .filter(movie =>
+                  movie.name
+                    .toLowerCase()
+                    .includes(nameMovieSearch.toLowerCase())
                 )
-                .map(e => (
+                .map(movie => (
                   <div
-                    key={e.id_movie}
-                    className="col col-md-4 col-lg-3 mb-4 d-flex justify-content-center"
+                    key={movie.id_movie}
+                    className="col-12 col-sm-6 col-md-3 col-lg-2 cardMovie"
                   >
-                    <Movie data={e} />
+                    <Movie data={movie} />
                   </div>
                 ))
             ) : (
               <div>
-                <p>No film corresponds to your search</p>
+                <p className="noMovieMessage m-4">
+                  No film corresponds to your search
+                </p>
               </div>
             )}
           </div>
@@ -45,10 +53,11 @@ class Movies extends Component {
 }
 
 const mapStateToProps = state => ({
-  moviesList: state.movieReducer.moviesList
+  moviesList: state.movieReducer.moviesList,
+  nameMovieSearch: state.movieReducer.nameMovieSearch
 });
 
 export default connect(
   mapStateToProps,
-  { getMoviesList }
+  { getMoviesList, searchMovieInCollection }
 )(Movies);

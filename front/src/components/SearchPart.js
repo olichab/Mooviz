@@ -1,118 +1,180 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faRandom } from "@fortawesome/free-solid-svg-icons";
+
 import {
   getCategoriesList,
   getMovieByCategory,
   getMoviesList,
+  clearMoviesList,
   getRandomMovie,
-  getMovieByName
+  searchMovieInCollection
 } from "../actions/movieAction";
 
 import "../scss/SearchPart.scss";
 
 class SearchPart extends Component {
-state={
-  searchName: ""
-}
+  state = {
+    categoriesSelect: []
+  };
 
   componentDidMount() {
-    this.props.getCategoriesList();
+    const { getCategoriesList, } = this.props;
+    getCategoriesList();
   }
 
-  handleSortByCategory = e => {
-    const category = e.target.value;
-    this.props.getMovieByCategory(category);
+  handeSearchMovieInCollection = e => {
+    const { searchMovieInCollection, } = this.props;
+    searchMovieInCollection(e.target.value);
   };
 
-  handeChange = e => {
-    this.props.handleSearchMovie(e.target.value)
+  handleShowAllMovies = () => {
+    const { getMoviesList, } = this.props;
+    getMoviesList();
     this.setState({
-      searchName: e.target.value
-    })
-  }
-
-  handleSortByName = e => {
-    e.preventDefault();
-    const name = this.state.searchName;
-    this.props.getMovieByName(name);
+      categoriesSelect: []
+    });
   };
 
-  handleShowAllMovies = e => {
-    this.props.getMoviesList();
+  handleClearMoviesList = () => {
+    const { clearMoviesList } = this.props;
+    clearMoviesList();
+    this.setState({
+      categoriesSelect: this.props.categoriesList
+    });
   };
 
   handleShowRandomMovie = () => {
-    this.props.getRandomMovie();
+    const { getRandomMovie } = this.props;
+    getRandomMovie();
+  };
+
+  toggleLabelCategory = (e, nameCategory, index) => {
+    const { categoriesList, getMovieByCategory } = this.props;
+    const { categoriesSelect } = this.state;
+
+    const filteredMovieByCategory = () => {
+      getMovieByCategory(
+        categoriesList.filter(cat => !this.state.categoriesSelect.includes(cat))
+      );
+    };
+
+    // Get movie by categories selected
+    // if nameCategory is in categoriesSelect, filter array
+    if (categoriesSelect.indexOf(nameCategory) > -1) {
+      this.setState(
+        {
+          categoriesSelect: categoriesSelect.filter(name => {
+            return name !== nameCategory;
+          })
+        },
+        () => {
+          categoriesList.length !== this.state.categoriesSelect.length
+            ? filteredMovieByCategory()
+            : this.handleShowAllMovies();
+        }
+      );
+    } else {
+      // if nameCategory is NOT in categoriesSelect, add category
+      this.setState(
+        {
+          categoriesSelect: [...categoriesSelect, nameCategory]
+        },
+        () => {
+          categoriesList.length !== this.state.categoriesSelect.length
+            ? filteredMovieByCategory()
+            : this.handleClearMoviesList();
+        }
+      );
+    }
   };
 
   render() {
+    const { labelCategoryClassInactive, categoriesSelect } = this.state;
     const { categoriesList } = this.props;
 
     return (
-      <div className="SearchPart container p-3">
-        <div className="row justify-content-center m-2">
-          <div className="col col-md-6">
-            <form onSubmit={this.handleSortByName}>
+      <div className="SearchPart container-fluid">
+        <div className="row justify-content-center mt-3 mb-3">
+          <div className="col col-md-9 col-lg-6">
               <div className="input-group flex-nowrap">
-                <div className="input-group-prepend">
-                  <span
-                    className="input-group-text"
-                    id="addon-wrapping"
-                    role="img"
-                    aria-label="icone search"
-                  >
-                    🔍
-                  </span>
-                </div>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control searchBarFilm"
                   placeholder="Search a film"
-                  aria-label="Username"
+                  aria-label="film name"
                   aria-describedby="addon-wrapping"
-                  onChange={this.handeChange}
-                  value={this.state.searchName}
+                  onChange={this.handeSearchMovieInCollection}
+                  // value={this.state.searchName}
                 />
               </div>
-            </form>
           </div>
         </div>
-        <div className="row justify-content-center m-2">
-          <div className="col col-md-6">
-            <div className="input-group">
-              <select
-                className="custom-select"
-                id="inputGroupSelect04"
-                aria-label="Example select with button addon"
-                onChange={this.handleSortByCategory}
-              >
-                <option defaultValue>Choose a category...</option>
-                {categoriesList.length &&
-                  categoriesList.map(e => (
-                    <option key={e.id_category} value={e.name_category}>
-                      {e.name_category}
-                    </option>
-                  ))}
-              </select>
-              <div className="input-group-append">
-                <button
-                  className="btn btn-outline-secondary btnRandom"
-                  type="button"
-                  onClick={this.handleShowRandomMovie}
-                >
-                  Random movie
-                </button>
-                <button
-                  className="btn btn-outline-secondary btnRandom"
-                  type="button"
-                  onClick={this.handleShowAllMovies}
-                >
-                  All movies
-                </button>
-              </div>
+        <div className="row justify-content-center containerLabelCategory">
+          <div className="col-auto p-0 m-1">
+            <div
+              className={`labelCategoryActive`}
+              onClick={this.handleShowAllMovies}
+            >
+              <b>All</b>
             </div>
           </div>
+          <div className="col-auto p-0 m-1">
+            <div
+              className={`labelCategoryActive ${labelCategoryClassInactive}`}
+              onClick={this.handleClearMoviesList}
+            >
+              <b>None</b>
+            </div>
+          </div>
+          {categoriesList.length ? (
+            categoriesList.map((category, index) => (
+              <div
+                key={index}
+                className="col-auto p-0 m-1"
+                onClick={e => this.toggleLabelCategory(e, category, index)}
+              >
+                <div
+                  className={
+                    categoriesSelect.indexOf(category) !== -1
+                      ? "labelCategoryActive inactive"
+                      : "labelCategoryActive "
+                  }
+                >
+                  {category}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div>
+              <p>No category</p>
+            </div>
+          )}
+        </div>
+        <div className="container- mt-3">
+          <div className="row justify-content-center align-items-center" />
+          <button
+            type="button"
+            className="btn btnAddMovie m-2"
+            onClick={this.a}
+          >
+            <div className="d-inline p-1">
+              <FontAwesomeIcon icon={faPlus} className="iconBrown" />
+            </div>
+            <p className="d-inline p-1">ADD A MOVIE</p>
+          </button>
+          <button
+            type="button"
+            className="btn btnAddMovie m-2"
+            onClick={this.handleShowRandomMovie}
+          >
+            <div className="d-inline p-1">
+              <FontAwesomeIcon icon={faRandom} className="iconBrown" />
+            </div>
+            <p className="d-inline p-1">RANDOM MOVIE</p>
+          </button>
         </div>
       </div>
     );
@@ -130,8 +192,9 @@ export default connect(
   {
     getCategoriesList,
     getMovieByCategory,
-    getMovieByName,
     getMoviesList,
-    getRandomMovie
+    clearMoviesList,
+    getRandomMovie,
+    searchMovieInCollection
   }
 )(SearchPart);

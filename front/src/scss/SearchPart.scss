@@ -1,5 +1,54 @@
-.SearchPart{
-  .btnRandom{
-    color: #FFF;
+@import "./helpers/colors";
+@import "./helpers/fonts";
+@import "./helpers/forms";
+@import "./helpers/media.scss";
+
+.SearchPart {
+  padding: 80px 0 30px 0;
+  margin: auto;
+
+  .searchBarFilm,
+  .searchBarFilm:focus {
+    height: 60px !important;
+    @include font-22;
+    @include input-white;
+
   }
+
+  .containerLabelCategory {
+    margin: auto;
+    .labelCategoryActive {
+      @include font-14;
+      @include label;
+    }
+    .inactive {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    // MEDIA-QUERIES
+    @include sm {
+      width: 100%;
+    }
+    @include md {
+      width: 70%;
+    }
+    @include lg {
+      width: 40%;
+    }
+  }
+
+  .btnAddMovie {
+    @include font-16;
+    background-color: $white;
+    color: $brown;
+    font-weight: 600;
+    .iconBrown {
+      color: $brown;
+    }
+  }
+}
+
+.btnRandom {
+  color: $white;
 }

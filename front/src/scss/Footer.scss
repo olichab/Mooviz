@@ -1,4 +1,12 @@
-.Footer{
-  background-color: #FFF;
+@import "./helpers/colors";
+
+.Footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: $white;
   min-height: 5vh;
+  color: #000;
 }

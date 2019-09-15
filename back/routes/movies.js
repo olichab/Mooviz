@@ -5,7 +5,7 @@ const connection = require("../config.js");
 // List of all movie
 // Ex: http://localhost:3001/movies
 router.get("/", function(req, res, next) {
-  const sql = `SELECT * FROM Movie m, Category c WHERE m.id_category=c.id_category AND m.is_active=1 ORDER BY m.release_date ASC`;
+  const sql = `SELECT * FROM Movie m, Category c WHERE m.id_category=c.id_category AND m.is_active=1 ORDER BY m.name ASC`;
   connection.query(sql, (error, results) => {
     if (error) res.status(500).send(error);
     else res.status(200).send(results);

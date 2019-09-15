@@ -6,7 +6,7 @@ import Home from "./components/Home";
 import AddMovie from "./components/AddMovie";
 import Footer from "./components/Footer";
 
-import "./App.css";
+import "./App.scss";
 
 class App extends Component {
   render() {
@@ -17,7 +17,7 @@ class App extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/addMovie" component={AddMovie} />
         </Switch>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     );
   }

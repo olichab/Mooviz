@@ -6,10 +6,12 @@ class Header extends Component {
   render() {
     return (
       <div className="Header">
-        <nav className="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
-          <a className="navbar-brand" href="/">
-            What's the movie ?
-          </a>
+        <nav className="navbar navbar-expand-lg fixed-top align-items-center">
+          <div className="navbar-header">
+            <a className="navbar-brand" href="/">
+              Mooviz
+            </a>
+          </div>
           <button
             className="navbar-toggler"
             type="button"
@@ -21,7 +23,7 @@ class Header extends Component {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <div
+          {/* <div
             className="collapse navbar-collapse justify-content-end"
             id="navbarNavAltMarkup"
           >
@@ -33,7 +35,7 @@ class Header extends Component {
                 Add movie
               </a>
             </div>
-          </div>
+          </div> */}
         </nav>
       </div>
     );

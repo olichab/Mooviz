@@ -1,14 +1,15 @@
 import axios from "axios";
 import {
   GET_MOVIES_LIST,
+  CLEAR_MOVIES_LIST,
   GET_CATEGORIES_LIST,
-  DELETE_MOVIE,
   GET_MOVIE_BY_CATEGORY,
   GET_RANDOM_MOVIE,
-  GET_MOVIE_BY_NAME,
   GET_POSTER_MOVIE,
   GET_INFOS_MOVIE,
-  ADD_MOVIE
+  ADD_MOVIE,
+  DELETE_MOVIE,
+  SEARCH_MOVIE_IN_COLLECTION
 } from "./types";
 
 const domain = process.env.REACT_APP_DOMAIN_NAME;
@@ -21,6 +22,13 @@ export const getMoviesList = () => dispatch => {
       type: GET_MOVIES_LIST,
       getMoviesList: res.data
     });
+  });
+};
+
+export const clearMoviesList = () => dispatch => {
+  dispatch({
+    type: CLEAR_MOVIES_LIST,
+    clearMoviesList: []
   });
 };
 
@@ -44,18 +52,8 @@ export const getCategoriesList = () => dispatch => {
   });
 };
 
-export const getMovieByName = nameMovie => dispatch => {
-  const url = `${domain}/movies/movie/${nameMovie}`;
-  axios.get(url).then(res => {
-    dispatch({
-      type: GET_MOVIE_BY_NAME,
-      getMovieByName: res.data
-    });
-  });
-};
-
-export const getMovieByCategory = category => dispatch => {
-  const url = `${domain}/categories/${category}`;
+export const getMovieByCategory = categories => dispatch => {
+  const url = `${domain}/categories/${categories}`;
   axios.get(url).then(res => {
     dispatch({
       type: GET_MOVIE_BY_CATEGORY,
@@ -94,7 +92,6 @@ export const addMovie = state => dispatch => {
     duration,
     category
   } = state;
-  console.log("state:", state);
 
   const url = `${domain}/movies/newmovie`;
   const body = {
@@ -126,36 +123,9 @@ export const deleteMovie = idMovie => dispatch => {
   });
 };
 
-// export const postNewOffer = values => dispatch => {
-//   const { title, contract_type, place, description, is_published } = values;
-//   const questionsList = [];
-//   for (let prop in values) {
-//     if (prop.includes("question") && values[prop]) {
-//       questionsList.push(prop.substr(8));
-//     }
-//   }
-//   const body = {
-//     title,
-//     contract_type,
-//     place,
-//     description,
-//     is_published
-//   };
-//   const url = `${domain}api/offers?questions=${questionsList}`;
-//   axios({
-//     method: "POST",
-//     url,
-//     headers: {
-//       Authorization: `Bearer ${token}`
-//     },
-//     data: body
-//   })
-//     .then(() => {
-//       dispatch({
-//         type: POST_NEW_OFFER
-//       });
-//     })
-//     .catch(err => {
-//       throw err;
-//     });
-// };
+export const searchMovieInCollection = (nameMovieSearch) => dispatch => {
+    dispatch({
+      type: SEARCH_MOVIE_IN_COLLECTION,
+      nameMovieSearch: nameMovieSearch
+    });
+};
