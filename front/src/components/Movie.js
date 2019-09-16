@@ -56,7 +56,7 @@ class Movie extends Component {
           {data && (
             <img
               src={data.link_poster}
-              className="card-img-top"
+              className="card-img"
               alt="Movie poster"
               data-toggle="collapse"
               data-target={`#A${data.id_movie}`}

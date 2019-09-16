@@ -12,7 +12,6 @@
     height: 60px !important;
     @include font-22;
     @include input-white;
-
   }
 
   .containerLabelCategory {
@@ -38,8 +37,8 @@
     }
   }
 
-  .btnAddMovie {
-    @include font-16;
+  .btnAddMovie, .btnRandomMovie  {
+    @include font-18;
     background-color: $white;
     color: $brown;
     font-weight: 600;
@@ -47,8 +46,4 @@
       color: $brown;
     }
   }
-}
-
-.btnRandom {
-  color: $white;
 }

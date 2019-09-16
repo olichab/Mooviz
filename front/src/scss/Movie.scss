@@ -1,13 +1,9 @@
 @import "./helpers/colors";
+@import "./helpers/fonts";
 
 
 .cardMovie {
   border: none !important;
-  color: #000;
-
-  .card-img-top {
-    width: 100%;
-  }
 
   .card-info {
     position: absolute;
@@ -20,24 +16,22 @@
 
     .card-body{
       height: 100%;
+      color: $brown;
       .card-title{
-        font-size: 0.95rem;
+        @include font-20;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
       .card-text{
-        font-size: 0.8rem;
-        width: 100%;
+        @include font-16;
         overflow: auto;
-        padding:2%;
         margin-bottom: 7%;
       }
 
       .list-group-item {
-        font-size: 0.8rem;
+        @include font-16;
         background-color: $white;
-        padding: 1%;
         &:first-child{
           border-top: none;
         }
@@ -45,26 +39,14 @@
           border-bottom: none;
         }
       }
-
-      .moreInfoPart{
-        width: 100%;
-        position: absolute; top: 0;
-        left: 0;
-      }
-    }
-    .btn:focus{
-      outline: 0;
-      box-shadow: 0 0 0 0.1rem rgba($brown, 0.1);
     }
   }
 
-
-
+  .btn:focus{
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem rgba($brown, 0.1);
+  }
 }
-
-// .show {
-//   width: 100vw !important;
-// }
 
 .iconRed{
   color: $red;

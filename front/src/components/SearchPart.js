@@ -21,17 +21,17 @@ class SearchPart extends Component {
   };
 
   componentDidMount() {
-    const { getCategoriesList, } = this.props;
+    const { getCategoriesList } = this.props;
     getCategoriesList();
   }
 
   handeSearchMovieInCollection = e => {
-    const { searchMovieInCollection, } = this.props;
+    const { searchMovieInCollection } = this.props;
     searchMovieInCollection(e.target.value);
   };
 
   handleShowAllMovies = () => {
-    const { getMoviesList, } = this.props;
+    const { getMoviesList } = this.props;
     getMoviesList();
     this.setState({
       categoriesSelect: []
@@ -99,17 +99,17 @@ class SearchPart extends Component {
       <div className="SearchPart container-fluid">
         <div className="row justify-content-center mt-3 mb-3">
           <div className="col col-md-9 col-lg-6">
-              <div className="input-group flex-nowrap">
-                <input
-                  type="text"
-                  className="form-control searchBarFilm"
-                  placeholder="Search a film"
-                  aria-label="film name"
-                  aria-describedby="addon-wrapping"
-                  onChange={this.handeSearchMovieInCollection}
-                  // value={this.state.searchName}
-                />
-              </div>
+            <div className="input-group flex-nowrap">
+              <input
+                type="text"
+                className="form-control searchBarFilm"
+                placeholder="Search a film"
+                aria-label="film name"
+                aria-describedby="addon-wrapping"
+                onChange={this.handeSearchMovieInCollection}
+                // value={this.state.searchName}
+              />
+            </div>
           </div>
         </div>
         <div className="row justify-content-center containerLabelCategory">
@@ -153,29 +153,23 @@ class SearchPart extends Component {
             </div>
           )}
         </div>
-        <div className="container- mt-3">
-          <div className="row justify-content-center align-items-center" />
-          <button
-            type="button"
-            className="btn btnAddMovie m-2"
-            onClick={this.a}
-          >
-            <div className="d-inline p-1">
-              <FontAwesomeIcon icon={faPlus} className="iconBrown" />
-            </div>
-            <p className="d-inline p-1">ADD A MOVIE</p>
-          </button>
-          <button
-            type="button"
-            className="btn btnAddMovie m-2"
-            onClick={this.handleShowRandomMovie}
-          >
-            <div className="d-inline p-1">
-              <FontAwesomeIcon icon={faRandom} className="iconBrown" />
-            </div>
-            <p className="d-inline p-1">RANDOM MOVIE</p>
-          </button>
-        </div>
+        <div className="row justify-content-center align-items-center m-2"/>
+        <button type="button" className="btn btnAddMovie m-2" onClick={this.a}>
+          <div className="d-inline p-1">
+            <FontAwesomeIcon icon={faPlus} className="iconBrown" />
+          </div>
+          <p className="d-inline p-1">ADD A MOVIE</p>
+        </button>
+        <button
+          type="button"
+          className="btn btnRandomMovie m-2"
+          onClick={this.handleShowRandomMovie}
+        >
+          <div className="d-inline p-1">
+            <FontAwesomeIcon icon={faRandom} className="iconBrown" />
+          </div>
+          <p className="d-inline p-1">RANDOM MOVIE</p>
+        </button>
       </div>
     );
   }
