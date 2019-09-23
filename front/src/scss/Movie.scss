@@ -32,6 +32,7 @@
       .list-group-item {
         @include font-16;
         background-color: $white;
+        padding: 2px;
         &:first-child{
           border-top: none;
         }

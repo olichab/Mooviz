@@ -1,18 +1,85 @@
-.add-movie {
-  color: #FFF;
-  height: 100%;
+@import "./helpers/colors";
+@import "./helpers/fonts";
+@import "./helpers/forms";
+@import "./helpers/media.scss";
 
-  .poster-movies-container {
-    max-height: 350px;
-    overflow: scroll;
+.SearchPartAddMovie {
+  padding: 80px 0 0 0;
+  margin: auto;
 
-    img {
-      width: 100%;
-      height: auto;
+  .searchBarFilm,
+  .searchBarFilm:focus {
+    height: 60px !important;
+    @include font-22;
+    @include input-white;
+  }
+
+  .btnBackToCollection {
+    @include font-18;
+    background-color: $white;
+    color: $brown;
+    font-weight: 600;
+    a:hover {
+      text-decoration: none;
+    }
+    .iconBrown,
+    a {
+      color: $brown;
     }
   }
 
-  textarea {
-    resize: none;
+  .msgAddMovie {
+    background-color: $white;
+    color: $brown;
+    .title {
+      @include font-20;
+      text-align: left;
+    }
+    hr {
+      border-color: $brown;
+    }
+    .text {
+      @include font-16;
+      margin: 0;
+    }
+  }
+}
+.moviesPosterContainer {
+  margin: auto;
+
+  .poster-movie {
+    padding: 0;
+    margin: 0;
+    img {
+      width: 100%;
+      max-height: auto;
+    }
+  }
+}
+
+.infosMovieContainer {
+  color: $white;
+  img {
+    width: auto;
+    max-height: 450px;
+  }
+
+  .textInfos {
+    @include font-20;
+  }
+
+  .btnAddMovie,
+  .btnBackToCollection {
+    @include font-18;
+    background-color: $white;
+    color: $brown;
+    font-weight: 600;
+    a:hover {
+      text-decoration: none;
+    }
+    .iconBrown,
+    a {
+      color: $brown;
+    }
   }
 }

@@ -16,10 +16,6 @@ import {
 import "../scss/SearchPart.scss";
 
 class SearchPart extends Component {
-  state = {
-    categoriesSelect: []
-  };
-
   componentDidMount() {
     const { getCategoriesList } = this.props;
     getCategoriesList();
@@ -33,17 +29,11 @@ class SearchPart extends Component {
   handleShowAllMovies = () => {
     const { getMoviesList } = this.props;
     getMoviesList();
-    this.setState({
-      categoriesSelect: []
-    });
   };
 
   handleClearMoviesList = () => {
-    const { clearMoviesList } = this.props;
-    clearMoviesList();
-    this.setState({
-      categoriesSelect: this.props.categoriesList
-    });
+    const { clearMoviesList, categoriesList } = this.props;
+    clearMoviesList(categoriesList);
   };
 
   handleShowRandomMovie = () => {
@@ -51,49 +41,13 @@ class SearchPart extends Component {
     getRandomMovie();
   };
 
-  toggleLabelCategory = (e, nameCategory, index) => {
-    const { categoriesList, getMovieByCategory } = this.props;
-    const { categoriesSelect } = this.state;
-
-    const filteredMovieByCategory = () => {
-      getMovieByCategory(
-        categoriesList.filter(cat => !this.state.categoriesSelect.includes(cat))
-      );
-    };
-
-    // Get movie by categories selected
-    // if nameCategory is in categoriesSelect, filter array
-    if (categoriesSelect.indexOf(nameCategory) > -1) {
-      this.setState(
-        {
-          categoriesSelect: categoriesSelect.filter(name => {
-            return name !== nameCategory;
-          })
-        },
-        () => {
-          categoriesList.length !== this.state.categoriesSelect.length
-            ? filteredMovieByCategory()
-            : this.handleShowAllMovies();
-        }
-      );
-    } else {
-      // if nameCategory is NOT in categoriesSelect, add category
-      this.setState(
-        {
-          categoriesSelect: [...categoriesSelect, nameCategory]
-        },
-        () => {
-          categoriesList.length !== this.state.categoriesSelect.length
-            ? filteredMovieByCategory()
-            : this.handleClearMoviesList();
-        }
-      );
-    }
+  handleFilterByCategory = (nameCategorySelect) => {
+    const { categoriesList, getMovieByCategory, categoriesSelect } = this.props;
+    getMovieByCategory(nameCategorySelect, categoriesList, categoriesSelect);
   };
 
   render() {
-    const { labelCategoryClassInactive, categoriesSelect } = this.state;
-    const { categoriesList } = this.props;
+    const { categoriesList, categoriesSelect } = this.props;
 
     return (
       <div className="SearchPart container-fluid">
@@ -103,11 +57,10 @@ class SearchPart extends Component {
               <input
                 type="text"
                 className="form-control searchBarFilm"
-                placeholder="Search a film"
+                placeholder="Search a movie"
                 aria-label="film name"
                 aria-describedby="addon-wrapping"
                 onChange={this.handeSearchMovieInCollection}
-                // value={this.state.searchName}
               />
             </div>
           </div>
@@ -123,53 +76,56 @@ class SearchPart extends Component {
           </div>
           <div className="col-auto p-0 m-1">
             <div
-              className={`labelCategoryActive ${labelCategoryClassInactive}`}
+              className={`labelCategoryActive`}
               onClick={this.handleClearMoviesList}
             >
               <b>None</b>
             </div>
           </div>
           {categoriesList.length ? (
-            categoriesList.map((category, index) => (
+            categoriesList.map(cat => (
               <div
-                key={index}
+                key={cat.id_category}
                 className="col-auto p-0 m-1"
-                onClick={e => this.toggleLabelCategory(e, category, index)}
+                onClick={e => this.handleFilterByCategory(cat.name_category)}
               >
                 <div
                   className={
-                    categoriesSelect.indexOf(category) !== -1
+                    categoriesSelect.indexOf(cat.name_category) > -1
                       ? "labelCategoryActive inactive"
                       : "labelCategoryActive "
                   }
                 >
-                  {category}
+                  {cat.name_category}
                 </div>
               </div>
             ))
           ) : (
             <div>
-              <p>No category</p>
+              <p className="p-0 m-2 noCategory">No category</p>
             </div>
           )}
         </div>
-        <div className="row justify-content-center align-items-center m-2"/>
-        <button type="button" className="btn btnAddMovie m-2" onClick={this.a}>
-          <div className="d-inline p-1">
-            <FontAwesomeIcon icon={faPlus} className="iconBrown" />
-          </div>
-          <p className="d-inline p-1">ADD A MOVIE</p>
-        </button>
-        <button
-          type="button"
-          className="btn btnRandomMovie m-2"
-          onClick={this.handleShowRandomMovie}
-        >
-          <div className="d-inline p-1">
-            <FontAwesomeIcon icon={faRandom} className="iconBrown" />
-          </div>
-          <p className="d-inline p-1">RANDOM MOVIE</p>
-        </button>
+        <div className="row justify-content-center align-items-center m-2">
+          <button type="button" className="btn btnAddMovie m-2">
+            <div className="d-inline p-1">
+              <FontAwesomeIcon icon={faPlus} className="iconBrown" />
+            </div>
+            <a className="d-inline p-1" href="/addMovie">
+              ADD A MOVIE
+            </a>
+          </button>
+          <button
+            type="button"
+            className="btn btnRandomMovie m-2"
+            onClick={this.handleShowRandomMovie}
+          >
+            <div className="d-inline p-1">
+              <FontAwesomeIcon icon={faRandom} className="iconBrown" />
+            </div>
+            <p className="d-inline p-1">RANDOM MOVIE</p>
+          </button>
+        </div>
       </div>
     );
   }
@@ -178,7 +134,7 @@ class SearchPart extends Component {
 const mapStateToProps = state => ({
   categoriesList: state.movieReducer.categoriesList,
   movieByCategory: state.movieReducer.movieByCategory,
-  moviesList: state.movieReducer.moviesList
+  categoriesSelect: state.movieReducer.categoriesSelect
 });
 
 export default connect(

@@ -42,8 +42,17 @@
     background-color: $white;
     color: $brown;
     font-weight: 600;
-    .iconBrown {
+    a:hover {
+      text-decoration: none;
+    }
+    .iconBrown, a {
       color: $brown;
     }
+  }
+
+  .noCategory{
+    @include font-18;
+    color: $white;
+    height: auto;
   }
 }
