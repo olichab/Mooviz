@@ -19,7 +19,7 @@ class Movies extends Component {
     return (
       <div className="Movies container-fluid">
         <div className="row ml-2 titleCollection">
-          <h3>My collection</h3>
+          {moviesList.length ? <h3>My collection ({moviesList.length} movies)</h3> : <h3>My collection</h3>}
         </div>
         <div className="accordion" id="accordionMovie">
           <div className="row d-flex justify-content-center mb-4 mt-4">
@@ -35,7 +35,7 @@ class Movies extends Component {
                     key={movie.id_movie}
                     className="col-12 col-sm-6 col-md-3 col-lg-2 cardMovie"
                   >
-                    <Movie data={movie} />
+                    <Movie movie={movie}/>
                   </div>
                 ))
             ) : (

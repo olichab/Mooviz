@@ -1,4 +1,5 @@
 @import "./helpers/colors";
+@import "./helpers/fonts.scss";
 
 .Header {
   .navbar {
@@ -8,16 +9,16 @@
   }
 
   .navbar-header {
-    float: left;
-    padding: 15px;
-    text-align: center;
     width: 100%;
+    text-align: center;
   }
 
   .navbar-brand {
-    float: none;
+    @include font-60;
+    font-family: "ToxTypewriter";
     color: $brown;
-    font-size: 36px;
+    margin: auto;
+    line-height: 75px;
   }
 
   .navbar-collapse{

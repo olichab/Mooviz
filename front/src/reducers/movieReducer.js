@@ -4,10 +4,11 @@ import {
   GET_CATEGORIES_LIST,
   GET_MOVIE_BY_CATEGORY,
   GET_RANDOM_MOVIE,
-  GET_POSTER_MOVIE,
+  GET_MOVIE_POSTER,
   GET_INFOS_MOVIE,
   ADD_MOVIE,
   DELETE_MOVIE,
+  SEARCH_MOVIE_TO_ADD,
   SEARCH_MOVIE_IN_COLLECTION
 } from "../actions/types";
 
@@ -15,9 +16,13 @@ const initialState = {
   moviesList: [],
   categoriesList: [],
   movieByCategory: [],
-  posterMovie: {},
+  categoriesSelect: [],
+  moviePoster: {},
   infosMovie: {},
-  nameMovieSearch: ""
+  nameMovieSearch: "",
+  nameMovieToAdd: "",
+  msgAddMovie: { title: "", text: "" },
+  showInfosMovie: false
 };
 
 export default function(state = initialState, action) {
@@ -25,45 +30,58 @@ export default function(state = initialState, action) {
     case GET_MOVIES_LIST:
       return {
         ...state,
-        moviesList: action.getMoviesList
+        moviesList: action.getMoviesList,
+        categoriesSelect: action.categoriesSelect
       };
     case CLEAR_MOVIES_LIST:
       return {
         ...state,
-        moviesList: action.clearMoviesList
+        moviesList: action.moviesList,
+        categoriesSelect: action.categoriesSelect
       };
     case GET_CATEGORIES_LIST:
       return {
         ...state,
-        categoriesList: action.getCategoriesList.map(n => n.name_category)
+        categoriesList: action.getCategoriesList
       };
     case GET_MOVIE_BY_CATEGORY:
       return {
         ...state,
-        moviesList: action.getMovieByCategory
+        moviesList: action.moviesList,
+        categoriesSelect: action.categoriesSelect
       };
     case GET_RANDOM_MOVIE:
       return {
         ...state,
         moviesList: action.getRandomMovie
       };
-    case GET_POSTER_MOVIE:
+    case GET_MOVIE_POSTER:
       return {
         ...state,
-        posterMovie: action.getPosterMovie
+        moviePoster: action.getMoviePoster,
+        showInfosMovie: action.showInfosMovie
       };
     case GET_INFOS_MOVIE:
       return {
         ...state,
-        infosMovie: action.getInfosMovie
+        infosMovie: action.getInfosMovie,
+        showInfosMovie: action.showInfosMovie
       };
     case ADD_MOVIE:
       return {
-        ...state
+        ...state,
+        msgAddMovie: action.msgAddMovie,
+        nameMovieToAdd: action.nameMovieToAdd
       };
     case DELETE_MOVIE:
       return {
         ...state
+      };
+    case SEARCH_MOVIE_TO_ADD:
+      return {
+        ...state,
+        msgAddMovie: action.msgAddMovie,
+        nameMovieToAdd: action.nameMovieToAdd
       };
     case SEARCH_MOVIE_IN_COLLECTION:
       return {
