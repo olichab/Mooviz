@@ -8,22 +8,29 @@ import Movie from "./Movie";
 import "../scss/Movies.scss";
 
 class Movies extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { getMoviesList } = this.props;
     getMoviesList();
   }
 
   render() {
     const { moviesList, nameMovieSearch } = this.props;
+    const pseudo = localStorage.pseudo;
 
     return (
       <div className="Movies container-fluid">
         <div className="row ml-2 titleCollection">
-          {moviesList.length ? <h3>My collection ({moviesList.length} movies)</h3> : <h3>My collection</h3>}
+          {moviesList !== undefined && pseudo !== undefined ? (
+            <h3>
+              {pseudo}'s collection ({moviesList.length} movies)
+            </h3>
+          ) : (
+            <h3>My collection</h3>
+          )}
         </div>
         <div className="accordion" id="accordionMovie">
           <div className="row d-flex justify-content-center mb-4 mt-4">
-            {moviesList.length ? (
+            {moviesList !== undefined ? (
               moviesList
                 .filter(movie =>
                   movie.name
@@ -35,7 +42,7 @@ class Movies extends Component {
                     key={movie.id_movie}
                     className="col-12 col-sm-6 col-md-3 col-lg-2 cardMovie"
                   >
-                    <Movie movie={movie}/>
+                    <Movie movie={movie} />
                   </div>
                 ))
             ) : (

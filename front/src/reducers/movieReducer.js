@@ -30,7 +30,7 @@ export default function(state = initialState, action) {
     case GET_MOVIES_LIST:
       return {
         ...state,
-        moviesList: action.getMoviesList,
+        moviesList: action.moviesList,
         categoriesSelect: action.categoriesSelect
       };
     case CLEAR_MOVIES_LIST:
@@ -42,7 +42,7 @@ export default function(state = initialState, action) {
     case GET_CATEGORIES_LIST:
       return {
         ...state,
-        categoriesList: action.getCategoriesList
+        categoriesList: action.categoriesList
       };
     case GET_MOVIE_BY_CATEGORY:
       return {

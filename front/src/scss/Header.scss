@@ -1,7 +1,9 @@
 @import "./helpers/colors";
 @import "./helpers/fonts.scss";
+@import "./helpers/media.scss";
 
 .Header {
+  margin-bottom: 75px;
   .navbar {
     background-color: $white;
     padding: 0;
@@ -17,16 +19,32 @@
     @include font-60;
     font-family: "ToxTypewriter";
     color: $brown;
-    margin: auto;
     line-height: 75px;
+    margin-left: 32%;
+    // MEDIA-QUERIES
+    @include md {
+      margin-left: 40%;
+    }
+    @include lg {
+      margin-left: 42%;
+    }
+  }
+  .navbar-toggler:focus,
+  .navbar-toggler:active {
+    outline: none;
+    box-shadow: none;
+  }
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(70,48,51, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
   }
 
-  .navbar-collapse{
-    width: 20%;
+  .navbar-collapse {
+    background-color: $white;
+    outline: 0;
   }
 
-  .nav-item ,.nav-link{
+  .nav-item,
+  .nav-link {
     color: $brown;
   }
-
 }

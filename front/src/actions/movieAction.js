@@ -16,16 +16,27 @@ import {
 
 const domain = process.env.REACT_APP_DOMAIN_NAME;
 const apiKey = process.env.REACT_APP_API_MOVIEDB;
+const token = localStorage.getItem("token");
 
 export const getMoviesList = () => dispatch => {
   const url = `${domain}/movies`;
-  axios.get(url).then(res => {
-    dispatch({
-      type: GET_MOVIES_LIST,
-      getMoviesList: res.data,
-      categoriesSelect: []
+  axios({
+    method: "GET",
+    url,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then(res => {
+      dispatch({
+        type: GET_MOVIES_LIST,
+        moviesList: res.data,
+        categoriesSelect: []
+      });
+    })
+    .catch(error => {
+      console.error(error.response);
     });
-  });
 };
 
 export const clearMoviesList = categoriesList => dispatch => {
@@ -39,20 +50,36 @@ export const clearMoviesList = categoriesList => dispatch => {
 
 export const getRandomMovie = () => dispatch => {
   const url = `${domain}/movies/random`;
-  axios.get(url).then(res => {
-    dispatch({
-      type: GET_RANDOM_MOVIE,
-      getRandomMovie: res.data
+  axios({
+    method: "GET",
+    url,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+    .then(res => {
+      dispatch({
+        type: GET_RANDOM_MOVIE,
+        getRandomMovie: res.data
+      });
+    })
+    .catch(error => {
+      console.error(error.response);
     });
-  });
 };
 
 export const getCategoriesList = () => dispatch => {
   const url = `${domain}/categories`;
-  axios.get(url).then(res => {
+  axios({
+    method: "GET",
+    url,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).then(res => {
     dispatch({
       type: GET_CATEGORIES_LIST,
-      getCategoriesList: res.data
+      categoriesList: res.data
     });
   });
 };
@@ -74,7 +101,13 @@ export const getMovieByCategory = (
         cat => !categoriesSelect.includes(cat)
       );
       const url = `${domain}/categories/${categories}`;
-      axios.get(url).then(res => {
+      axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(res => {
         dispatch({
           type: GET_MOVIE_BY_CATEGORY,
           moviesList: res.data,
@@ -91,7 +124,13 @@ export const getMovieByCategory = (
         cat => !categoriesSelect.includes(cat)
       );
       const url = `${domain}/categories/${categories}`;
-      axios.get(url).then(res => {
+      axios({
+        method: "GET",
+        url,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(res => {
         dispatch({
           type: GET_MOVIE_BY_CATEGORY,
           moviesList: res.data,
@@ -164,6 +203,7 @@ export const addMovie = (state, moviesList) => dispatch => {
     duration,
     category
   } = state;
+  const idUser = localStorage.user_id;
   const url = `${domain}/movies/newmovie`;
   const body = {
     name,
@@ -172,11 +212,12 @@ export const addMovie = (state, moviesList) => dispatch => {
     link_poster,
     release_date,
     duration,
-    category
+    category,
+    idUser
   };
-  const nameMovie = moviesList.map(e => e.name.toLowerCase());
+  const nameMovies = moviesList.map(e => e.name.toLowerCase());
   // Check if movie is already in collection
-  if (nameMovie.includes(state.name.toLowerCase())) {
+  if (nameMovies.includes(state.name.toLowerCase())) {
     dispatch({
       type: ADD_MOVIE,
       nameMovieToAdd: "",
@@ -190,6 +231,9 @@ export const addMovie = (state, moviesList) => dispatch => {
     axios({
       method: "POST",
       url,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
       data: body
     }).then(() => {
       dispatch({
