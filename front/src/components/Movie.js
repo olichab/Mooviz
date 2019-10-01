@@ -36,7 +36,7 @@ class Movie extends Component {
 
   handleOpenCard = () => {
     this.setState({
-      classShowCard: ""
+      classShowCard: "show"
     });
   };
 

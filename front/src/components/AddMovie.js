@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+
 import convertMinsToHrsMins from "../helpers/convertMinsToHrsMins";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -58,7 +60,6 @@ class AddMovie extends Component {
                   <input
                     type="text"
                     id="nameMovie"
-                    // name="name"
                     className="form-control searchBarFilm"
                     placeholder="What movie do you want to add ?"
                     aria-label="film name"
@@ -71,26 +72,26 @@ class AddMovie extends Component {
             </div>
             <div className="row justify-content-center m-2">
               <button type="button" className="btn btnBackToCollection m-2">
-                <div className="d-inline p-1">
-                  <FontAwesomeIcon icon={faArrowLeft} className="iconBrown" />
-                </div>
-                <a className="d-inline p-1" href="/">
+                <Link to="/collection">
+                  <div className="d-inline p-1">
+                    <FontAwesomeIcon icon={faArrowLeft} className="iconBrown" />
+                  </div>
                   BACK TO MY COLLECTION
-                </a>
+                </Link>
               </button>
             </div>
-            <div className="row justify-content-center">
-              <div className="col-12 col-sm-6 col-md-4">
-                {//Display message movie added or not
-                msgAddMovie.title.length && !nameMovieToAdd.length && (
+            {//Display message movie added or not
+            msgAddMovie.title !== "" && !nameMovieToAdd.length && (
+              <div className="row justify-content-center">
+                <div className="col-12 col-sm-6 col-md-4">
                   <div className="alert alert-info msgAddMovie" role="alert">
                     <h4 className="alert-heading title">{msgAddMovie.title}</h4>
                     <hr />
                     <p className="text">{msgAddMovie.text}</p>
                   </div>
-                )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {moviePoster.length && !showInfosMovie && (
             // Poster list according to search
