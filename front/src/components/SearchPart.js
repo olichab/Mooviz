@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +17,7 @@ import {
 import "../scss/SearchPart.scss";
 
 class SearchPart extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { getCategoriesList } = this.props;
     getCategoriesList();
   }
@@ -41,7 +42,7 @@ class SearchPart extends Component {
     getRandomMovie();
   };
 
-  handleFilterByCategory = (nameCategorySelect) => {
+  handleFilterByCategory = nameCategorySelect => {
     const { categoriesList, getMovieByCategory, categoriesSelect } = this.props;
     getMovieByCategory(nameCategorySelect, categoriesList, categoriesSelect);
   };
@@ -107,14 +108,14 @@ class SearchPart extends Component {
           )}
         </div>
         <div className="row justify-content-center align-items-center m-2">
-          <button type="button" className="btn btnAddMovie m-2">
-            <div className="d-inline p-1">
-              <FontAwesomeIcon icon={faPlus} className="iconBrown" />
-            </div>
-            <a className="d-inline p-1" href="/addMovie">
+          <Link to="/addmovie">
+            <button type="button" className="btn btnAddMovie m-2">
+              <div className="d-inline p-1">
+                <FontAwesomeIcon icon={faPlus} className="iconBrown" />
+              </div>
               ADD A MOVIE
-            </a>
-          </button>
+            </button>
+          </Link>
           <button
             type="button"
             className="btn btnRandomMovie m-2"

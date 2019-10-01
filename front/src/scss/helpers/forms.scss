@@ -11,6 +11,10 @@
     font-family: "ToxTypewriter";
     color: $brown;
   }
+  &:focus {
+    background-color: $white;
+    color: $brown;
+  }
 }
 
 @mixin label {

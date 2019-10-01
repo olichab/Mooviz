@@ -1,30 +1,40 @@
+// Imports
 let express = require("express");
 let router = express.Router();
-const connection = require("../config.js");
+const knex = require("../db/knex");
+const checkToken = require("../helpers/checkToken");
 
 // List of all category
-// Ex: http://localhost:3001/movies/categories
-router.get("/", function(req, res, next) {
-  const sql = `SELECT * FROM Categories`;
-  connection.query(sql, (error, results) => {
-    if (error) res.status(500).send(error);
-    else res.status(200).send(results);
-  });
+// Ex: http://localhost:3001/V1/api/categories
+
+router.route("/").get(checkToken, async (req, res) => {
+  try {
+    const result = await knex("Categories").select();
+    res.status(200).send(result);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // List film by category
-// Ex: http://localhost:3001/movies/categories/:category
-router.get("/:category", function(req, res, next) {
-  const nameCategory = req.params.category;
+// Ex: http://localhost:3001//V1/api/categories/:categories
 
-  const sql =
-    "SELECT * FROM Movies m,Categories c WHERE m.id_category=c.id_category AND m.is_active=1 AND c.name_category IN (" +
-    connection.escape(nameCategory.split(","))+") ORDER BY m.name ASC";
-
-  connection.query(sql, nameCategory, (error, results) => {
-    if (error) res.status(500).send(error);
-    else res.status(200).send(results);
-  });
+router.route("/:categories").get(checkToken, async (req, res) => {
+  const nameCategories = req.params.categories.split(",");
+  try {
+    const result = await knex({
+      m: "Movies",
+      c: "Categories"
+    })
+      .select()
+      .whereRaw("m.id_category = c.id_category")
+      .andWhere("m.is_active", 1)
+      .whereIn("c.name_category", nameCategories)
+      .orderBy("m.name");
+    res.status(200).send(result);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 module.exports = router;

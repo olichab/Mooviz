@@ -1,0 +1,38 @@
+@import "./helpers/colors";
+@import "./helpers/fonts";
+@import "./helpers/forms";
+@import "./helpers/media.scss";
+
+.signInContainer, .signUpContainer {
+  padding: 20px 0 30px 0;
+  margin: auto;
+  color: $white;
+  label {
+    @include font-18;
+  }
+  input {
+    @include input-white;
+    width: 50%;
+  }
+  .btnSignIn,
+  .btnSignUp {
+    @include font-18;
+    background-color: $white;
+    color: $brown;
+    font-weight: 600;
+    a:hover {
+      text-decoration: none;
+    }
+  }
+
+  .msgFailed{
+    border: solid 1px $red;
+    padding: 10px;
+    color:$red;
+    @include font-20;
+  }
+
+  a, a:hover{
+    color: $white;
+  }
+}

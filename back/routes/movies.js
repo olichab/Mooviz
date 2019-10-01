@@ -1,54 +1,66 @@
+// Imports
 let express = require("express");
 let router = express.Router();
-const connection = require("../config.js");
+const knex = require("../db/knex");
+const checkToken = require("../helpers/checkToken");
 
-// List of all movie
-// Ex: http://localhost:3001/movies
-router.get("/", function(req, res, next) {
-  const sql = `SELECT * FROM Movies m, Categories c WHERE m.id_category=c.id_category AND m.is_active=1 ORDER BY m.name ASC`;
-  connection.query(sql, (error, results) => {
-    if (error) res.status(500).send(error);
-    else res.status(200).send(results);
-  });
-});
+// List of all movie with categories
+// Ex: http://localhost:3001/V1/api/movies
 
-// List film by name
-// Ex: http://localhost:3001/movies/movie/:name
-router.get("/movie/:name", function(req, res, next) {
-  const nameMovie = req.params.name;
-  const sql =
-    "SELECT * FROM Movies m,Categories c WHERE m.id_category=c.id_category AND m.name LIKE" +
-    connection.escape("%" + nameMovie + "%");
-  connection.query(sql, nameMovie, (error, results) => {
-    if (error) res.status(500).send(error);
-    else res.status(200).send(results);
-  });
+router.route("/").get(checkToken, async (req, res) => {
+  const result = await knex({
+    m: "Movies",
+    c: "Categories"
+  })
+    .select()
+    .whereRaw("m.id_category = c.id_category")
+    .andWhere("m.is_active", 1)
+    .orderBy("m.name");
+  res.status(200).send(result);
 });
 
 // Random movie
-// Ex: http://localhost:3001/movies/random
-router.get("/random", function(req, res, next) {
-  const sql = `SELECT * FROM Movies m, Categories c WHERE m.id_category=c.id_category AND m.is_active=1 ORDER BY RAND() LIMIT 1`;
-  connection.query(sql, (error, results) => {
-    if (error) res.status(500).send(error);
-    else res.status(200).send(results);
-  });
+// Ex: http://localhost:3001/V1/api/movies/random
+
+router.route("/random").get(checkToken, async (req, res) => {
+  try {
+    const result = await knex({
+      m: "Movies",
+      c: "Categories"
+    })
+      .select()
+      .whereRaw("m.id_category = c.id_category")
+      .andWhere("m.is_active", 1)
+      .orderByRaw("RAND()")
+      .limit(1);
+    res.status(200).send(result);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // Delete a movie
-// Ex: http://localhost:3001/movies/deletemovie/:id
-router.put("/deletemovie/:id", function(req, res, next) {
+// Ex: http://localhost:3001/V1/api/movies/deletemovie/:id
+
+router.route("/deletemovie/:id").put(checkToken, async (req, res) => {
   const idMovie = Number(req.params.id);
-  const sql = `UPDATE Movies SET is_active=0 WHERE id_movie=?`;
-  connection.query(sql, idMovie, (error, results) => {
-    if (error) res.status(500).send(error);
-    else res.status(200).send(results);
-  });
+  try {
+    await knex("Movies")
+      .where("id_movie", "=", idMovie)
+      .update({
+        is_active: 0,
+        thisKeyIsSkipped: undefined
+      });
+    res.status(204).send("Movie has been correctly deleted");
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // Add new movie
-// http://localhost:3001/movies/newmovie
-router.post("/newmovie", function(req, res, next) {
+// Ex: http://localhost:3001/V1/api/movies/newmovie
+
+router.route("/newmovie").post(checkToken, async (req, res) => {
   const name = req.body.name;
   const director = req.body.director;
   const synopsis = req.body.synopsis;
@@ -57,38 +69,36 @@ router.post("/newmovie", function(req, res, next) {
     ? req.body.release_date
     : null;
   const duration = req.body.duration;
-  const category = req.body.category.length ? req.body.category : "No category";
   const is_active = 1;
+  const category = req.body.category.length ? req.body.category : "No category";
 
-  const sql = `SELECT id_category FROM Categories WHERE name_category=?`;
-  connection.query(sql, category, (error, results) => {
-    if (error) res.status(500).send(error);
-    else {
-      const dataForm = [
-        name,
-        director,
-        synopsis,
-        link_poster,
-        release_date,
-        duration,
-        is_active,
-        (id_category = results[0].id_category)
-      ];
-      const sql2 = `INSERT INTO Movies (name, director, synopsis,link_poster,release_date,duration,is_active, id_category) VALUES (?,?,?,?,?,?,?,?)`;
-      connection.query(sql2, dataForm, error => {
-        if (error) res.status(500).send(error);
-        else {
-          const sql3 = `INSERT INTO Users_Movies(id_user, id_movie) SELECT id_user, id_movie FROM Users u, Movies m WHERE u.id_user=1 AND m.name=?`;
-          connection.query(sql3, name, error => {
-            if (error) res.status(500).send(error);
-            else {
-              res.status(201).send("Le film à bien ete ajoute");
-            }
-          });
-        }
-      });
-    }
-  });
+  try {
+    // select id category
+    const resQueryIdCategory = await knex("Categories")
+      .select("id_category")
+      .where("name_category", "=", category);
+    const id_category = resQueryIdCategory[0].id_category;
+    const fixDataMovies = {
+      name,
+      director,
+      synopsis,
+      link_poster,
+      release_date,
+      duration,
+      is_active,
+      id_category
+    };
+    // insert in movie table
+    const resQueryInsertMovie = await knex("Movies").insert(fixDataMovies);
+    const id_movie = resQueryInsertMovie[0];
+    const id_user = req.body.idUser;
+    const fixDataUsersMovies = { id_user, id_movie };
+    // insert in users_movies table
+    await knex("Users_Movies").insert(fixDataUsersMovies);
+    res.status(201).send("Movie has been correctly added");
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 module.exports = router;
