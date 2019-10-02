@@ -2,19 +2,34 @@
 let express = require("express");
 let router = express.Router();
 const knex = require("../db/knex");
-const checkToken = require("../helpers/checkToken");
+const decodeIdUserFromToken = require("../helpers/decodeIdUserFromToken");
 
 // List of all movie with categories
 // Ex: http://localhost:3001/V1/api/movies
 
-router.route("/").get(checkToken, async (req, res) => {
+router.get("/", async (req, res) => {
+  const id_user = decodeIdUserFromToken(req);
   const result = await knex({
     m: "Movies",
-    c: "Categories"
+    c: "Categories",
+    u: "Users",
+    um: "Users_Movies"
   })
-    .select()
+    .select(
+      "m.id_movie",
+      "m.name",
+      "m.director",
+      "m.synopsis",
+      "m.link_poster",
+      "m.release_date",
+      "m.duration",
+      "c.name_category"
+    )
     .whereRaw("m.id_category = c.id_category")
-    .andWhere("m.is_active", 1)
+    .whereRaw("um.id_user = u.id_user")
+    .whereRaw("um.id_movie = m.id_movie")
+    .andWhere("um.id_user", id_user)
+    .andWhere("um.is_active", 1)
     .orderBy("m.name");
   res.status(200).send(result);
 });
@@ -22,15 +37,30 @@ router.route("/").get(checkToken, async (req, res) => {
 // Random movie
 // Ex: http://localhost:3001/V1/api/movies/random
 
-router.route("/random").get(checkToken, async (req, res) => {
+router.get("/random", async (req, res) => {
+  const id_user = decodeIdUserFromToken(req);
   try {
     const result = await knex({
       m: "Movies",
-      c: "Categories"
+      c: "Categories",
+      u: "Users",
+      um: "Users_Movies"
     })
-      .select()
+      .select(
+        "m.id_movie",
+        "m.name",
+        "m.director",
+        "m.synopsis",
+        "m.link_poster",
+        "m.release_date",
+        "m.duration",
+        "c.name_category"
+      )
       .whereRaw("m.id_category = c.id_category")
-      .andWhere("m.is_active", 1)
+      .whereRaw("um.id_user = u.id_user")
+      .whereRaw("um.id_movie = m.id_movie")
+      .andWhere("um.id_user", id_user)
+      .andWhere("um.is_active", 1)
       .orderByRaw("RAND()")
       .limit(1);
     res.status(200).send(result);
@@ -42,13 +72,21 @@ router.route("/random").get(checkToken, async (req, res) => {
 // Delete a movie
 // Ex: http://localhost:3001/V1/api/movies/deletemovie/:id
 
-router.route("/deletemovie/:id").put(checkToken, async (req, res) => {
+router.put("/deletemovie/:id", async (req, res) => {
+  const id_user = decodeIdUserFromToken(req);
   const idMovie = Number(req.params.id);
   try {
-    await knex("Movies")
-      .where("id_movie", "=", idMovie)
+    await knex({
+      m: "Movies",
+      u: "Users",
+      um: "Users_Movies"
+    })
+      .whereRaw("um.id_user = u.id_user")
+      .whereRaw("um.id_movie = m.id_movie")
+      .where("um.id_movie", "=", idMovie)
+      .andWhere("um.id_user", id_user)
       .update({
-        is_active: 0,
+        "um.is_active": 0,
         thisKeyIsSkipped: undefined
       });
     res.status(204).send("Movie has been correctly deleted");
@@ -60,7 +98,7 @@ router.route("/deletemovie/:id").put(checkToken, async (req, res) => {
 // Add new movie
 // Ex: http://localhost:3001/V1/api/movies/newmovie
 
-router.route("/newmovie").post(checkToken, async (req, res) => {
+router.post("/newmovie", async (req, res) => {
   const name = req.body.name;
   const director = req.body.director;
   const synopsis = req.body.synopsis;
@@ -71,6 +109,7 @@ router.route("/newmovie").post(checkToken, async (req, res) => {
   const duration = req.body.duration;
   const is_active = 1;
   const category = req.body.category.length ? req.body.category : "No category";
+  const id_user = decodeIdUserFromToken(req);
 
   try {
     // select id category
@@ -91,7 +130,6 @@ router.route("/newmovie").post(checkToken, async (req, res) => {
     // insert in movie table
     const resQueryInsertMovie = await knex("Movies").insert(fixDataMovies);
     const id_movie = resQueryInsertMovie[0];
-    const id_user = req.body.idUser;
     const fixDataUsersMovies = { id_user, id_movie };
     // insert in users_movies table
     await knex("Users_Movies").insert(fixDataUsersMovies);

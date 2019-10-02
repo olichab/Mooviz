@@ -16,10 +16,11 @@ import {
 
 const domain = process.env.REACT_APP_DOMAIN_NAME;
 const apiKey = process.env.REACT_APP_API_MOVIEDB;
-const token = localStorage.getItem("token");
 
 export const getMoviesList = () => dispatch => {
   const url = `${domain}/movies`;
+  const token = localStorage.getItem("token");
+
   axios({
     method: "GET",
     url,
@@ -49,6 +50,7 @@ export const clearMoviesList = categoriesList => dispatch => {
 };
 
 export const getRandomMovie = () => dispatch => {
+  const token = localStorage.getItem("token");
   const url = `${domain}/movies/random`;
   axios({
     method: "GET",
@@ -60,7 +62,7 @@ export const getRandomMovie = () => dispatch => {
     .then(res => {
       dispatch({
         type: GET_RANDOM_MOVIE,
-        getRandomMovie: res.data
+        moviesList: res.data
       });
     })
     .catch(error => {
@@ -69,6 +71,7 @@ export const getRandomMovie = () => dispatch => {
 };
 
 export const getCategoriesList = () => dispatch => {
+  const token = localStorage.getItem("token");
   const url = `${domain}/categories`;
   axios({
     method: "GET",
@@ -89,6 +92,7 @@ export const getMovieByCategory = (
   categoriesList,
   categoriesSelect
 ) => dispatch => {
+  const token = localStorage.getItem("token");
   const categoriesListName = categoriesList.map(cat => cat.name_category);
   // if nameCategory is in categoriesSelect, filtered array
   if (categoriesSelect.indexOf(nameCategorySelect) > -1) {
@@ -194,6 +198,7 @@ export const getInfosMovie = id => dispatch => {
 };
 
 export const addMovie = (state, moviesList) => dispatch => {
+  const token = localStorage.getItem("token");
   const {
     name,
     director,
@@ -203,7 +208,6 @@ export const addMovie = (state, moviesList) => dispatch => {
     duration,
     category
   } = state;
-  const idUser = localStorage.user_id;
   const url = `${domain}/movies/newmovie`;
   const body = {
     name,
@@ -212,8 +216,7 @@ export const addMovie = (state, moviesList) => dispatch => {
     link_poster,
     release_date,
     duration,
-    category,
-    idUser
+    category
   };
   const nameMovies = moviesList.map(e => e.name.toLowerCase());
   // Check if movie is already in collection
@@ -249,10 +252,21 @@ export const addMovie = (state, moviesList) => dispatch => {
 };
 
 export const deleteMovie = idMovie => dispatch => {
+  const token = localStorage.getItem("token");
   const url = `${domain}/movies/deletemovie/${idMovie}`;
-  axios.put(url).then(() => {
+  axios({
+    method: "PUT",
+    url,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }).then(() => {
     dispatch({
-      type: DELETE_MOVIE
+      type: DELETE_MOVIE,
+      msgDeletedMovie: {
+        title: "Deleted",
+        text: "The movie has been deleted"
+      }
     });
   });
 };

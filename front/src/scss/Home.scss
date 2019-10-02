@@ -2,6 +2,9 @@
 @import "./helpers/fonts.scss";
 @import "./helpers/media.scss";
 
-h1, p {
-  color: $white;
+.containerHome {
+  h1,
+  p {
+    color: $white;
+  }
 }

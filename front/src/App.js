@@ -21,6 +21,7 @@ class App extends Component {
     const { getProfileFetch } = this.props;
     getProfileFetch();
   }
+
   render() {
     const { isAuthenticated } = this.props;
 

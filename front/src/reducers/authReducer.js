@@ -13,7 +13,8 @@ const initialState = {
   isAuthenticated: false,
   isRegister: false,
   msgFailedLogin:"",
-  msgSignUp: ""
+  msgSignUp: "",
+  pseudo: ""
 };
 
 export default function(state = initialState, action) {
@@ -50,7 +51,8 @@ export default function(state = initialState, action) {
     case GET_PROFILE_FETCH:
       return {
         ...state,
-        isAuthenticated: action.isAuthenticated
+        isAuthenticated: action.isAuthenticated,
+        pseudo: action.pseudo
       };
     default:
       return state;

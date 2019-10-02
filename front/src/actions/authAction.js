@@ -61,8 +61,6 @@ export const signIn = formSignIn => dispatch => {
   })
     .then(res => {
       localStorage.setItem("token", res.headers["x-access-token"]);
-      localStorage.setItem("pseudo", res.data.pseudo);
-      localStorage.setItem("user_id", res.data.id_user);
       dispatch({
         type: SIGN_IN,
         formSignIn: { email: "", password: "" },
@@ -128,16 +126,18 @@ export const getProfileFetch = () => dispatch => {
       method: "POST",
       url,
       data: body
-    }).then(() => {
+    }).then(res => {
         dispatch({
           type: GET_PROFILE_FETCH,
-          isAuthenticated: true
+          isAuthenticated: true,
+          pseudo: res.data
         });
     });
   } else {
     dispatch({
       type: GET_PROFILE_FETCH,
-      isAuthenticated: false
+      isAuthenticated: false,
+      pseudo: ""
     });
   }
 };
