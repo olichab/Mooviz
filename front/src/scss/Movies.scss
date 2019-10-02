@@ -4,18 +4,33 @@
 .Movies {
   color: $white;
 
-  .cardMovie{
+  .cardMovie {
     padding: 0;
-    margin:0;
+    margin: 0;
   }
 
-  .titleCollection{
+  .titleCollection {
     border-bottom: solid 1px $white;
     margin: 0 10px 20px 0;
   }
 
-  .noMovieMessage{
+  .noMovieMessage {
     @include font-20;
   }
-}
 
+  .msgDeletedMovie {
+    background-color: $white;
+    color: $brown;
+    .title {
+      @include font-20;
+      text-align: left;
+    }
+    hr {
+      border-color: $brown;
+    }
+    .text {
+      @include font-16;
+      margin: 0;
+    }
+  }
+}

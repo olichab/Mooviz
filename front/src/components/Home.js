@@ -5,7 +5,7 @@ import "../scss/Home.scss";
 export default class Home extends Component {
   render() {
     return (
-      <div className="container">
+      <div className="container containerHome">
         <h1>Welcome to Mooviz</h1>
         <p>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni quia

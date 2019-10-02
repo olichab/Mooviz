@@ -22,6 +22,7 @@ const initialState = {
   nameMovieSearch: "",
   nameMovieToAdd: "",
   msgAddMovie: { title: "", text: "" },
+  msgDeletedMovie: { title: "", text: "" },
   showInfosMovie: false
 };
 
@@ -53,7 +54,7 @@ export default function(state = initialState, action) {
     case GET_RANDOM_MOVIE:
       return {
         ...state,
-        moviesList: action.getRandomMovie
+        moviesList: action.moviesList
       };
     case GET_MOVIE_POSTER:
       return {
@@ -75,7 +76,8 @@ export default function(state = initialState, action) {
       };
     case DELETE_MOVIE:
       return {
-        ...state
+        ...state,
+        msgDeletedMovie: action.msgDeletedMovie
       };
     case SEARCH_MOVIE_TO_ADD:
       return {

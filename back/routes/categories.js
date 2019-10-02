@@ -2,12 +2,12 @@
 let express = require("express");
 let router = express.Router();
 const knex = require("../db/knex");
-const checkToken = require("../helpers/checkToken");
+const decodeIdUserFromToken = require("../helpers/decodeIdUserFromToken");
 
 // List of all category
 // Ex: http://localhost:3001/V1/api/categories
 
-router.route("/").get(checkToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await knex("Categories").select();
     res.status(200).send(result);
@@ -17,18 +17,33 @@ router.route("/").get(checkToken, async (req, res) => {
 });
 
 // List film by category
-// Ex: http://localhost:3001//V1/api/categories/:categories
+// Ex: http://localhost:3001/V1/api/categories/:categories
 
-router.route("/:categories").get(checkToken, async (req, res) => {
+router.get("/:categories", async (req, res) => {
   const nameCategories = req.params.categories.split(",");
+  const id_user = decodeIdUserFromToken(req);
   try {
     const result = await knex({
       m: "Movies",
-      c: "Categories"
+      c: "Categories",
+      u: "Users",
+      um: "Users_Movies"
     })
-      .select()
+      .select(
+        "m.id_movie",
+        "m.name",
+        "m.director",
+        "m.synopsis",
+        "m.link_poster",
+        "m.release_date",
+        "m.duration",
+        "c.name_category"
+      )
       .whereRaw("m.id_category = c.id_category")
-      .andWhere("m.is_active", 1)
+      .whereRaw("um.id_user = u.id_user")
+      .whereRaw("um.id_movie = m.id_movie")
+      .andWhere("um.id_user", id_user)
+      .andWhere("um.is_active", 1)
       .whereIn("c.name_category", nameCategories)
       .orderBy("m.name");
     res.status(200).send(result);

@@ -8,7 +8,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
-
+const passport = require("passport");
+require("./helpers/passport");
 const app = express();
 
 /**** routers *****/
@@ -43,9 +44,19 @@ app.use(express.static(path.join(__dirname, "public")));
 // routes
 app.use("/public", express.static("public"));
 app.use("/", indexRouter);
-app.use(`${version}/movies`, moviesRouter);
-app.use(`${version}/categories`, categoriesRouter);
 app.use(`${version}/auth`, authRouter);
+
+// Protected routes
+app.use(
+  `${version}/movies`,
+  passport.authenticate("jwt", { session: false }),
+  moviesRouter
+);
+app.use(
+  `${version}/categories`,
+  passport.authenticate("jwt", { session: false }),
+  categoriesRouter
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

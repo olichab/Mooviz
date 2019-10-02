@@ -13,9 +13,16 @@ class Movies extends Component {
     getMoviesList();
   }
 
+  componentDidUpdate(prevProps) {
+    const { getMoviesList } = this.props;
+    //Refresh moviesList after movie deleted
+    if (prevProps.moviesList.length === this.props.moviesList.length) {
+      getMoviesList();
+    }
+  }
+
   render() {
-    const { moviesList, nameMovieSearch } = this.props;
-    const pseudo = localStorage.pseudo;
+    const { moviesList, nameMovieSearch, pseudo, msgDeletedMovie } = this.props;
 
     return (
       <div className="Movies container-fluid">
@@ -29,6 +36,20 @@ class Movies extends Component {
           )}
         </div>
         <div className="accordion" id="accordionMovie">
+          {//Display message movie deleted
+          msgDeletedMovie.title !== "" && (
+            <div className="row justify-content-center">
+              <div className="col-12 col-sm-6 col-md-4">
+                <div className="alert alert-info msgDeletedMovie" role="alert">
+                  <h4 className="alert-heading title">
+                    {msgDeletedMovie.title}
+                  </h4>
+                  <hr />
+                  <p className="text">{msgDeletedMovie.text}</p>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="row d-flex justify-content-center mb-4 mt-4">
             {moviesList !== undefined ? (
               moviesList
@@ -61,7 +82,9 @@ class Movies extends Component {
 
 const mapStateToProps = state => ({
   moviesList: state.movieReducer.moviesList,
-  nameMovieSearch: state.movieReducer.nameMovieSearch
+  nameMovieSearch: state.movieReducer.nameMovieSearch,
+  pseudo: state.authReducer.pseudo,
+  msgDeletedMovie: state.movieReducer.msgDeletedMovie
 });
 
 export default connect(

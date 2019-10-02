@@ -31,7 +31,6 @@ class Movie extends Component {
   handleDeleteMovie = () => {
     const { movie } = this.props;
     this.props.deleteMovie(movie.id_movie);
-    window.location.reload();
   };
 
   handleOpenCard = () => {
