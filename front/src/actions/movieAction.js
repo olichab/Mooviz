@@ -44,7 +44,7 @@ export const clearMoviesList = categoriesList => dispatch => {
   const categoriesListName = categoriesList.map(cat => cat.name_category);
   dispatch({
     type: CLEAR_MOVIES_LIST,
-    moviesList: [],
+    moviesListFiltered: [],
     categoriesSelect: categoriesListName
   });
 };
@@ -62,7 +62,7 @@ export const getRandomMovie = () => dispatch => {
     .then(res => {
       dispatch({
         type: GET_RANDOM_MOVIE,
-        moviesList: res.data
+        moviesListFiltered: res.data
       });
     })
     .catch(error => {
@@ -104,7 +104,7 @@ export const getMovieByCategory = (
       const categories = categoriesListName.filter(
         cat => !categoriesSelect.includes(cat)
       );
-      const url = `${domain}/categories/${categories}`;
+      const url = `${domain}/categories/filtered?categories=${categories}`;
       axios({
         method: "GET",
         url,
@@ -114,7 +114,7 @@ export const getMovieByCategory = (
       }).then(res => {
         dispatch({
           type: GET_MOVIE_BY_CATEGORY,
-          moviesList: res.data,
+          moviesListFiltered: res.data,
           categoriesSelect: categoriesSelect
         });
       });
@@ -127,7 +127,7 @@ export const getMovieByCategory = (
       const categories = categoriesListName.filter(
         cat => !categoriesSelect.includes(cat)
       );
-      const url = `${domain}/categories/${categories}`;
+      const url = `${domain}/categories/filtered?categories=${categories}`;
       axios({
         method: "GET",
         url,
@@ -137,14 +137,14 @@ export const getMovieByCategory = (
       }).then(res => {
         dispatch({
           type: GET_MOVIE_BY_CATEGORY,
-          moviesList: res.data,
+          moviesListFiltered: res.data,
           categoriesSelect: categoriesSelect
         });
       });
     } else {
       dispatch({
         type: GET_MOVIE_BY_CATEGORY,
-        moviesList: [],
+        moviesListFiltered: [],
         categoriesSelect: categoriesListName
       });
     }
@@ -260,13 +260,14 @@ export const deleteMovie = idMovie => dispatch => {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  }).then(() => {
+  }).then(res => {
     dispatch({
       type: DELETE_MOVIE,
       msgDeletedMovie: {
         title: "Deleted",
         text: "The movie has been deleted"
-      }
+      },
+      idMovie: res.data
     });
   });
 };
@@ -285,6 +286,7 @@ export const searchMovieToAdd = nameMovieToAdd => dispatch => {
 export const searchMovieInCollection = nameMovieSearch => dispatch => {
   dispatch({
     type: SEARCH_MOVIE_IN_COLLECTION,
-    nameMovieSearch: nameMovieSearch
+    nameMovieSearch: nameMovieSearch,
+    categoriesSelect: []
   });
 };
