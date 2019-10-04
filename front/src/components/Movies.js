@@ -13,16 +13,8 @@ class Movies extends Component {
     getMoviesList();
   }
 
-  componentDidUpdate(prevProps) {
-    const { getMoviesList } = this.props;
-    //Refresh moviesList after movie deleted
-    if (prevProps.moviesList.length === this.props.moviesList.length) {
-      getMoviesList();
-    }
-  }
-
   render() {
-    const { moviesList, nameMovieSearch, pseudo, msgDeletedMovie } = this.props;
+    const { moviesList, pseudo, msgDeletedMovie } = this.props;
 
     return (
       <div className="Movies container-fluid">
@@ -52,20 +44,14 @@ class Movies extends Component {
           )}
           <div className="row d-flex justify-content-center mb-4 mt-4">
             {moviesList !== undefined ? (
-              moviesList
-                .filter(movie =>
-                  movie.name
-                    .toLowerCase()
-                    .includes(nameMovieSearch.toLowerCase())
-                )
-                .map(movie => (
-                  <div
-                    key={movie.id_movie}
-                    className="col-12 col-sm-6 col-md-3 col-lg-2 cardMovie"
-                  >
-                    <Movie movie={movie} />
-                  </div>
-                ))
+              moviesList.map(movie => (
+                <div
+                  key={movie.id_movie}
+                  className="col-12 col-sm-6 col-md-3 col-lg-2 cardMovie"
+                >
+                  <Movie movie={movie} />
+                </div>
+              ))
             ) : (
               <div>
                 <p className="noMovieMessage m-4">
@@ -81,7 +67,7 @@ class Movies extends Component {
 }
 
 const mapStateToProps = state => ({
-  moviesList: state.movieReducer.moviesList,
+  moviesList: state.movieReducer.moviesListFiltered,
   nameMovieSearch: state.movieReducer.nameMovieSearch,
   pseudo: state.authReducer.pseudo,
   msgDeletedMovie: state.movieReducer.msgDeletedMovie

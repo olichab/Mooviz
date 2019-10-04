@@ -12,15 +12,15 @@ router.get("/", async (req, res) => {
     const result = await knex("Categories").select();
     res.status(200).send(result);
   } catch (error) {
-    console.error(error);
+    res.status(400).send(error);
   }
 });
 
 // List film by category
 // Ex: http://localhost:3001/V1/api/categories/:categories
 
-router.get("/:categories", async (req, res) => {
-  const nameCategories = req.params.categories.split(",");
+router.get("/filtered", async (req, res) => {
+  const nameCategories = req.query.categories.split(",");
   const id_user = decodeIdUserFromToken(req);
   try {
     const result = await knex({
@@ -48,7 +48,7 @@ router.get("/:categories", async (req, res) => {
       .orderBy("m.name");
     res.status(200).send(result);
   } catch (error) {
-    console.error(error);
+    res.status(400).send(error);
   }
 });
 

@@ -14,6 +14,7 @@ import {
 
 const initialState = {
   moviesList: [],
+  moviesListFiltered: [],
   categoriesList: [],
   movieByCategory: [],
   categoriesSelect: [],
@@ -32,12 +33,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         moviesList: action.moviesList,
+        moviesListFiltered: action.moviesList,
         categoriesSelect: action.categoriesSelect
       };
     case CLEAR_MOVIES_LIST:
       return {
         ...state,
-        moviesList: action.moviesList,
+        moviesListFiltered: action.moviesListFiltered,
         categoriesSelect: action.categoriesSelect
       };
     case GET_CATEGORIES_LIST:
@@ -48,13 +50,13 @@ export default function(state = initialState, action) {
     case GET_MOVIE_BY_CATEGORY:
       return {
         ...state,
-        moviesList: action.moviesList,
+        moviesListFiltered: action.moviesListFiltered,
         categoriesSelect: action.categoriesSelect
       };
     case GET_RANDOM_MOVIE:
       return {
         ...state,
-        moviesList: action.moviesList
+        moviesListFiltered: action.moviesListFiltered
       };
     case GET_MOVIE_POSTER:
       return {
@@ -75,9 +77,13 @@ export default function(state = initialState, action) {
         nameMovieToAdd: action.nameMovieToAdd
       };
     case DELETE_MOVIE:
+      let newListAfterDelete = state.moviesList.filter(
+        e => e.id_movie !== action.idMovie
+      );
       return {
         ...state,
-        msgDeletedMovie: action.msgDeletedMovie
+        msgDeletedMovie: action.msgDeletedMovie,
+        moviesList: newListAfterDelete
       };
     case SEARCH_MOVIE_TO_ADD:
       return {
@@ -86,9 +92,13 @@ export default function(state = initialState, action) {
         nameMovieToAdd: action.nameMovieToAdd
       };
     case SEARCH_MOVIE_IN_COLLECTION:
+      state.moviesListFiltered = state.moviesList.filter(movie =>
+        movie.name.toLowerCase().includes(action.nameMovieSearch.toLowerCase())
+      );
       return {
         ...state,
-        nameMovieSearch: action.nameMovieSearch
+        moviesListFiltered: state.moviesListFiltered,
+        categoriesSelect: action.categoriesSelect
       };
     default:
       return state;
