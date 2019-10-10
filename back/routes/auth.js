@@ -19,7 +19,7 @@ const jwtSecret = process.env.JWT_SECRET;
 router.post("/signin", (req, res) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
     if (err) return res.status(500).send(err);
-    if (!user) return res.status(400).json({ message: info.message });
+    if (!user) return res.status(401).json({ message: info.message });
     const tokenInfo = {
       id: user.id_user,
       pseudo: user.pseudo
@@ -28,10 +28,7 @@ router.post("/signin", (req, res) => {
     return res
       .header("Access-Control-Expose-Headers", "x-access-token")
       .set("x-access-token", token)
-      .json({
-        id_user: user.id_user,
-        pseudo: user.pseudo
-      });
+      .end();
   })(req, res);
 });
 
@@ -61,7 +58,6 @@ router.post("/signup", async (req, res) => {
     return res
       .status(401)
       .json({ message: "This mail or pseudo already exists" });
-
   let hashPassword = bcrypt.hashSync(password, 10);
   const fixDataUsers = {
     pseudo,

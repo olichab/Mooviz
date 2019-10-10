@@ -83,7 +83,7 @@ export default function(state = initialState, action) {
       return {
         ...state,
         msgDeletedMovie: action.msgDeletedMovie,
-        moviesList: newListAfterDelete
+        moviesListFiltered: newListAfterDelete
       };
     case SEARCH_MOVIE_TO_ADD:
       return {
