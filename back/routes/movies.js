@@ -103,14 +103,10 @@ router.put("/deletemovie/:id", async (req, res) => {
 // Ex: http://localhost:3001/V1/api/movies/newmovie
 
 router.post("/newmovie", async (req, res) => {
-  const name = req.body.name;
-  const director = req.body.director;
-  const synopsis = req.body.synopsis;
-  const link_poster = req.body.link_poster;
+  const { name, director, synopsis, link_poster, duration } = req.body;
   const release_date = !isNaN(Date.parse(req.body.release_date))
     ? req.body.release_date
     : null;
-  const duration = req.body.duration;
   const category = req.body.category.length ? req.body.category : "No category";
   const id_user = decodeIdUserFromToken(req);
 
@@ -223,7 +219,7 @@ router.post("/newmovie", async (req, res) => {
 
   try {
     checkMovieInDb(name).then(idMovie => {
-      //if idMovie find
+      // if idMovie find
       if (idMovie !== null) {
         checkIfMovieIsActiveForUser(idMovie, id_user).then(isActive => {
           switch (isActive) {
