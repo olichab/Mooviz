@@ -5,8 +5,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 50px;
-  background: $white;
-  min-height: 5vh;
-  color: $brown;
+  height: 60px;
+  background-color: $white;
+  color: $purple;
+  border-top: 1px solid $light-purple;
+  text-align: center;
 }

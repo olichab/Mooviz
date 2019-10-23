@@ -6,12 +6,13 @@ import {
   GET_CATEGORIES_LIST,
   GET_MOVIE_BY_CATEGORY,
   GET_RANDOM_MOVIE,
-  GET_MOVIE_POSTER,
+  GET_INFOS_MOVIE_BY_NAME,
   GET_INFOS_MOVIE,
   ADD_MOVIE,
   DELETE_MOVIE,
   SEARCH_MOVIE_TO_ADD,
-  SEARCH_MOVIE_IN_COLLECTION
+  SEARCH_MOVIE_IN_COLLECTION,
+  RESET_TOAST_MESSAGE
 } from "./types";
 
 const domain = process.env.REACT_APP_DOMAIN_NAME;
@@ -50,24 +51,9 @@ export const clearMoviesList = categoriesList => dispatch => {
 };
 
 export const getRandomMovie = () => dispatch => {
-  const token = localStorage.getItem("token");
-  const url = `${domain}/movies/random`;
-  axios({
-    method: "GET",
-    url,
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-    .then(res => {
-      dispatch({
-        type: GET_RANDOM_MOVIE,
-        moviesListFiltered: res.data
-      });
-    })
-    .catch(error => {
-      console.error(error.response);
-    });
+  dispatch({
+    type: GET_RANDOM_MOVIE
+  });
 };
 
 export const getCategoriesList = () => dispatch => {
@@ -151,21 +137,26 @@ export const getMovieByCategory = (
   }
 };
 
-export const getMoviePoster = name => dispatch => {
+export const getInfosMovieByName = name => dispatch => {
   const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${name}`;
   if (name.length > 2) {
     axios.get(url).then(res => {
       dispatch({
-        type: GET_MOVIE_POSTER,
-        getMoviePoster: res.data.results
+        type: GET_INFOS_MOVIE_BY_NAME,
+        infosMovieByName: res.data.results.map(res => ({
+          id: res.id,
+          name: res.original_title,
+          link_poster: res.poster_path
+            ? `https://image.tmdb.org/t/p/original/${res.poster_path}`
+            : ""
+        }))
       });
     });
   }
   if (name.length < 3) {
     dispatch({
-      type: GET_MOVIE_POSTER,
-      getMoviePoster: {},
-      showInfosMovie: false
+      type: GET_INFOS_MOVIE_BY_NAME,
+      infosMovieByName: {}
     });
   }
 };
@@ -181,7 +172,7 @@ export const getInfosMovie = id => dispatch => {
     );
     dispatch({
       type: GET_INFOS_MOVIE,
-      getInfosMovie: {
+      infosMovie: {
         name: res.data.original_title,
         director: director[0],
         synopsis: res.data.overview,
@@ -190,9 +181,8 @@ export const getInfosMovie = id => dispatch => {
         }`,
         release_date: res.data.release_date,
         duration: res.data.runtime,
-        category: res.data.genres.length ? res.data.genres[0].name : ""
-      },
-      showInfosMovie: true
+        name_category: res.data.genres.length ? res.data.genres[0].name : ""
+      }
     });
   });
 };
@@ -206,7 +196,7 @@ export const addMovie = (state, moviesList) => dispatch => {
     link_poster,
     release_date,
     duration,
-    category
+    name_category
   } = state;
   const url = `${domain}/movies/newmovie`;
   const body = {
@@ -216,7 +206,7 @@ export const addMovie = (state, moviesList) => dispatch => {
     link_poster,
     release_date,
     duration,
-    category
+    name_category
   };
   const nameMovies = moviesList.map(e => e.name.toLowerCase());
   // Check if movie is already in collection
@@ -224,10 +214,10 @@ export const addMovie = (state, moviesList) => dispatch => {
     dispatch({
       type: ADD_MOVIE,
       nameMovieToAdd: "",
-      msgAddMovie: {
+      toastMsg: {
         title: "Sorry",
         text:
-          "This movie is already in your collection. You can add another movie"
+          "This movie is already in your collection"
       }
     });
   } else {
@@ -242,7 +232,7 @@ export const addMovie = (state, moviesList) => dispatch => {
       dispatch({
         type: ADD_MOVIE,
         nameMovieToAdd: "",
-        msgAddMovie: {
+        toastMsg: {
           title: "Successful",
           text: "The movie has been added"
         }
@@ -263,7 +253,7 @@ export const deleteMovie = idMovie => dispatch => {
   }).then(res => {
     dispatch({
       type: DELETE_MOVIE,
-      msgDeletedMovie: {
+      toastMsg: {
         title: "Deleted",
         text: "The movie has been deleted"
       },
@@ -276,7 +266,7 @@ export const searchMovieToAdd = nameMovieToAdd => dispatch => {
   dispatch({
     type: SEARCH_MOVIE_TO_ADD,
     nameMovieToAdd: nameMovieToAdd,
-    msgAddMovie: {
+    toastMsg: {
       title: "",
       text: ""
     }
@@ -288,5 +278,15 @@ export const searchMovieInCollection = nameMovieSearch => dispatch => {
     type: SEARCH_MOVIE_IN_COLLECTION,
     nameMovieSearch: nameMovieSearch,
     categoriesSelect: []
+  });
+};
+
+export const resetToastMessage = () => dispatch => {
+  dispatch({
+    type: RESET_TOAST_MESSAGE,
+    toastMsg: {
+      title: "",
+      text: ""
+    }
   });
 };

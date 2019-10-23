@@ -9,50 +9,40 @@
 
   .searchBarFilm,
   .searchBarFilm:focus {
-    height: 60px !important;
     @include font-22;
-    @include input-white;
+    @include whiteSearchbar;
   }
 
   .containerLabelCategory {
     margin: auto;
     .labelCategoryActive {
-      @include font-14;
       @include label;
     }
     .inactive {
       text-decoration: line-through;
       opacity: 0.5;
     }
-
-    // MEDIA-QUERIES
-    @include sm {
-      width: 100%;
-    }
     @include md {
       width: 70%;
     }
     @include lg {
-      width: 40%;
+      width: 50%;
     }
   }
 
-  .btnAddMovie, .btnRandomMovie  {
-    @include font-18;
-    background-color: $white;
-    color: $brown;
-    font-weight: 600;
-    a:hover {
-      text-decoration: none;
-    }
-    .iconBrown, a {
-      color: $brown;
-    }
+  .addBtn,
+  .randomBtn {
+    @include whiteBtn;
   }
 
-  .noCategory{
-    @include font-18;
-    color: $white;
+  .icon {
+    display: inline-block;
+    margin-left: 8px;
+  }
+
+  .noCategory {
+    @include font-16;
+    color: $red;
     height: auto;
   }
 }

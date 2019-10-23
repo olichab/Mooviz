@@ -65,7 +65,11 @@ export const signIn = formSignIn => dispatch => {
         type: SIGN_IN,
         formSignIn: { email: "", password: "" },
         isAuthenticated: true,
-        msgFailedLogin: ""
+        msgFailedLogin: "",
+        toastMsg: {
+          title: "Hello",
+          text: "Happy to see you again"
+        }
       });
     })
     .catch(error => {
@@ -96,7 +100,11 @@ export const signUp = formSignUp => dispatch => {
         type: SIGN_UP,
         formSignUp: { email: "", pseudo: "", password: "", passwordBis: "" },
         msgSignUp: res.data.message,
-        isRegister: true
+        isRegister: true,
+        toastMsg: {
+          title: "Welcom",
+          text: "Happy to count to you among us"
+        }
       });
     })
     .catch(error => {
@@ -127,11 +135,11 @@ export const getProfileFetch = () => dispatch => {
       url,
       data: body
     }).then(res => {
-        dispatch({
-          type: GET_PROFILE_FETCH,
-          isAuthenticated: true,
-          pseudo: res.data
-        });
+      dispatch({
+        type: GET_PROFILE_FETCH,
+        isAuthenticated: true,
+        pseudo: res.data
+      });
     });
   } else {
     dispatch({

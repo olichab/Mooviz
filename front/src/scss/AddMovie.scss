@@ -9,77 +9,25 @@
 
   .searchBarFilm,
   .searchBarFilm:focus {
-    height: 60px !important;
-    @include font-22;
-    @include input-white;
+    @include whiteSearchbar;
   }
 
-  .btnBackToCollection {
-    @include font-18;
-    background-color: $white;
-    color: $brown;
-    font-weight: 600;
-    a:hover {
-      text-decoration: none;
-    }
-    .iconBrown,
-    a {
-      color: $brown;
-    }
+  .backToCollectionBtn {
+    @include whiteBtn;
   }
 
-  .msgAddMovie {
-    background-color: $white;
-    color: $brown;
-    .title {
-      @include font-20;
-      text-align: left;
-    }
-    hr {
-      border-color: $brown;
-    }
-    .text {
-      @include font-16;
-      margin: 0;
-    }
+  .linkUnstyled {
+    @include linkUnstyled;
   }
 }
 .moviesPosterContainer {
   margin: auto;
-
   .poster-movie {
     padding: 0;
     margin: 0;
     img {
       width: 100%;
       max-height: auto;
-    }
-  }
-}
-
-.infosMovieContainer {
-  color: $white;
-  img {
-    width: auto;
-    max-height: 450px;
-  }
-
-  .textInfos {
-    @include font-20;
-  }
-
-  .btnAddMovie,
-  .btnBackToCollection {
-    @include font-18;
-    background-color: $white;
-    color: $brown;
-    font-weight: 600;
-    a:hover {
-      text-decoration: none;
-    }
-    .iconBrown,
-    a {
-      color: $brown;
     }
   }
 }

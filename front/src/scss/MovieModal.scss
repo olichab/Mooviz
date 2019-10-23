@@ -1,0 +1,61 @@
+@import "./helpers/colors";
+@import "./helpers/fonts";
+@import "./helpers/forms";
+
+.movieModal {
+  display: block;
+  width: 90%;
+  height: 90%;
+  border: solid $light-purple;
+  border-width: 1px 1px 0 1px;
+  border-radius: 5px 5px 0 0;
+  margin: auto;
+}
+
+.movieModal {
+  @include font-14;
+  font-weight: 600;
+  color: $purple;
+  .close {
+    box-shadow: none;
+    outline: 0;
+  }
+  .modal-content {
+    border: 1px solid $purple;
+    .list-group-item {
+      border-color: rgba($light-purple, 0.35);
+    }
+    li {
+      color: $light-purple;
+    }
+    b {
+      color: $purple;
+    }
+    .moviePosterModal {
+      width: 100%;
+      height: auto;
+      border: 1px solid $light-purple;
+      border-radius: 5px;
+    }
+  }
+  .modal-header,
+  .modal-footer {
+    border-color: rgba($light-purple, 0.75);
+  }
+
+  .deleteBtn {
+    @include redBtn;
+  }
+  .randomBtn, .closeBtn {
+    @include whiteBtn;
+  }
+
+  .addMovieBtn {
+    @include purpleBtn;
+  }
+
+  .icon {
+    display: inline-block;
+    margin-left: 8px;
+  }
+}

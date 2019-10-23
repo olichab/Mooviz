@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faKey,
+  faUserPlus,
+  faSignOutAlt
+} from "@fortawesome/free-solid-svg-icons";
+
 import { signOut } from "../actions/authAction";
 
 import "../scss/Header.scss";
@@ -32,29 +39,56 @@ class Header extends Component {
             <span className="navbar-toggler-icon" />
           </button>
           <div
-            className="collapse navbar-collapse justify-content-end"
+            className="collapse navbar-collapse justify-content-end align-items-center"
             id="navbarNavAltMarkup"
           >
-            {!isAuthenticated ? (
-              <div className="navbar-nav">
-                <a className="nav-item nav-link" href="/signin">
-                  Sign in
+            <ul className="navbar-nav align-items-center">
+              <li className="nav-item active mt-auto mb-auto">
+                <a className="nav-link homeLink" href="/">
+                  Home <span className="sr-only">(current)</span>
                 </a>
-                <a className="nav-item nav-link" href="/signup">
-                  Sign up
-                </a>
-              </div>
-            ) : (
-              <div className="navbar-nav">
-                <a
-                  className="nav-item nav-link"
-                  href="/"
-                  onClick={this.handleSignOut}
-                >
-                  Sign out
-                </a>
-              </div>
-            )}
+              </li>
+              {!isAuthenticated ? (
+                <>
+                  <li className="nav-item mt-auto mb-auto">
+                    <a className="nav-link signinBtn" href="/signin">
+                      Sign in
+                      <span className="icon">
+                        <FontAwesomeIcon icon={faKey} />
+                      </span>
+                    </a>
+                  </li>
+                  <li className="nav-item mt-2 mt-md-2 mt-lg-auto mb-auto">
+                    <a className="nav-link signupBtn" href="/signup">
+                      Sign up
+                      <span className="icon">
+                        <FontAwesomeIcon icon={faUserPlus} />
+                      </span>
+                    </a>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item mt-auto mb-auto">
+                    <a className="nav-link collectionLink" href="/collection">
+                      My collection
+                    </a>
+                  </li>
+                  <li className="nav-item mt-2 mt-md-2 mt-lg-auto mb-auto">
+                    <a
+                      className="nav-link signoutBtn"
+                      href="/"
+                      onClick={this.handleSignOut}
+                    >
+                      Sign out
+                      <span className="icon">
+                        <FontAwesomeIcon icon={faSignOutAlt} />
+                      </span>
+                    </a>
+                  </li>
+                </>
+              )}
+            </ul>
           </div>
         </nav>
       </div>

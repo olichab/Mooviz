@@ -1,36 +1,22 @@
 @import "./helpers/colors";
 @import "./helpers/fonts";
+@import "./helpers/media";
 
-.Movies {
-  color: $white;
-
-  .cardMovie {
-    padding: 0;
-    margin: 0;
-  }
-
+.moviesContainer {
   .titleCollection {
-    border-bottom: solid 1px $white;
-    margin: 0 10px 20px 0;
+    color: $purple;
+    border-bottom: solid 1px $purple;
+    margin: 0 0 10px 0;
+    h4 {
+      @include font-20;
+      @include md {
+        @include font-24;
+      }
+    }
   }
 
   .noMovieMessage {
-    @include font-20;
-  }
-
-  .msgDeletedMovie {
-    background-color: $white;
-    color: $brown;
-    .title {
-      @include font-20;
-      text-align: left;
-    }
-    hr {
-      border-color: $brown;
-    }
-    .text {
-      @include font-16;
-      margin: 0;
-    }
+    color: $red;
+    @include font-18;
   }
 }
