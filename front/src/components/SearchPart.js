@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faRandom } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faRandom } from "@fortawesome/free-solid-svg-icons";
 
 import {
   getCategoriesList,
@@ -14,10 +13,12 @@ import {
   searchMovieInCollection
 } from "../actions/movieAction";
 
+import MovieModal from "./MovieModal";
+
 import "../scss/SearchPart.scss";
 
 class SearchPart extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { getCategoriesList } = this.props;
     getCategoriesList();
   }
@@ -37,7 +38,7 @@ class SearchPart extends Component {
     clearMoviesList(categoriesList);
   };
 
-  handleShowRandomMovie = () => {
+  handleGetRandomMovie = () => {
     const { getRandomMovie } = this.props;
     getRandomMovie();
   };
@@ -48,7 +49,7 @@ class SearchPart extends Component {
   };
 
   render() {
-    const { categoriesList, categoriesSelect } = this.props;
+    const { categoriesList, categoriesSelect, randomMovie } = this.props;
 
     return (
       <div className="SearchPart container-fluid">
@@ -103,29 +104,32 @@ class SearchPart extends Component {
             ))
           ) : (
             <div>
-              <p className="p-0 m-2 noCategory">No category</p>
+              <p className="p-0 m-2 noCategory">No category find</p>
             </div>
           )}
         </div>
-        <div className="row justify-content-center align-items-center m-2">
+        <div className="row justify-content-center mt-2">
           <Link to="/addmovie">
-            <button type="button" className="btn btnAddMovie m-2">
-              <div className="d-inline p-1">
-                <FontAwesomeIcon icon={faPlus} className="iconBrown" />
-              </div>
-              ADD A MOVIE
+            <button type="button" className="btn m-2 addBtn">
+              Add a movie
+              <span className="icon">
+                <FontAwesomeIcon icon={faPlusCircle} />
+              </span>
             </button>
           </Link>
           <button
             type="button"
-            className="btn btnRandomMovie m-2"
-            onClick={this.handleShowRandomMovie}
+            className="btn m-2 randomBtn"
+            onClick={this.handleGetRandomMovie}
+            data-toggle="modal"
+            data-target={`#targ${randomMovie.id_movie}`}
           >
-            <div className="d-inline p-1">
-              <FontAwesomeIcon icon={faRandom} className="iconBrown" />
-            </div>
-            <p className="d-inline p-1">RANDOM MOVIE</p>
+            Random movie
+            <span className="icon">
+              <FontAwesomeIcon icon={faRandom} />
+            </span>
           </button>
+          <MovieModal movie={randomMovie} isRandom={true}/>
         </div>
       </div>
     );
@@ -135,7 +139,8 @@ class SearchPart extends Component {
 const mapStateToProps = state => ({
   categoriesList: state.movieReducer.categoriesList,
   movieByCategory: state.movieReducer.movieByCategory,
-  categoriesSelect: state.movieReducer.categoriesSelect
+  categoriesSelect: state.movieReducer.categoriesSelect,
+  randomMovie: state.movieReducer.randomMovie
 });
 
 export default connect(

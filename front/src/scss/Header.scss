@@ -1,50 +1,66 @@
 @import "./helpers/colors";
 @import "./helpers/fonts.scss";
 @import "./helpers/media.scss";
+@import "./helpers/forms.scss";
 
 .Header {
-  margin-bottom: 75px;
+  // margin-bottom: 75px;
   .navbar {
     background-color: $white;
-    padding: 0;
-    height: 75px;
-  }
-
-  .navbar-header {
-    width: 100%;
-    text-align: center;
+    border-bottom: 1px solid $light-purple;
   }
 
   .navbar-brand {
-    @include font-60;
-    font-family: "ToxTypewriter";
-    color: $brown;
-    line-height: 75px;
-    margin-left: 32%;
-    // MEDIA-QUERIES
-    @include md {
-      margin-left: 40%;
-    }
-    @include lg {
-      margin-left: 42%;
-    }
+    @include font-32;
+    color: $purple;
   }
   .navbar-toggler:focus,
   .navbar-toggler:active {
-    outline: none;
+    outline: 0;
     box-shadow: none;
   }
   .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(70,48,51, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(104,103,164, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
   }
 
   .navbar-collapse {
-    background-color: $white;
     outline: 0;
+    box-shadow: none;
   }
 
-  .nav-item,
-  .nav-link {
-    color: $brown;
+  .nav-item {
+    text-align: center;
+    @include font-16;
+    font-weight: 600;
+    width: 45%;
+    margin-bottom: 5px;
+    @include sm {
+      width: 20%;
+    }
+    @include lg {
+      width: auto;
+      margin-right: 5px;
+    }
+  }
+
+  .homeLink, .collectionLink {
+    color: $purple;
+    &:hover {
+      color: $light-purple;
+    }
+  }
+
+  .signinBtn,
+  .signoutBtn {
+    @include whiteBtn;
+  }
+
+  .signupBtn {
+    @include purpleBtn;
+  }
+
+  .icon {
+    display: inline-block;
+    margin-left: 8px;
   }
 }

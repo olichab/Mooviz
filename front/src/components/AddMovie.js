@@ -1,53 +1,41 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-
-import convertMinsToHrsMins from "../helpers/convertMinsToHrsMins";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import {
   getMoviesList,
-  getCategoriesList,
-  getMoviePoster,
+  getInfosMovieByName,
   getInfosMovie,
-  addMovie,
   searchMovieToAdd
 } from "../actions/movieAction";
+
+import MovieModal from "./MovieModal";
 
 import "../scss/AddMovie.scss";
 
 class AddMovie extends Component {
   componentDidMount() {
-    this.props.getCategoriesList();
     this.props.getMoviesList();
   }
 
   handleSearchMovieToAdd = e => {
-    const { searchMovieToAdd, getMoviePoster } = this.props;
+    const { searchMovieToAdd, getInfosMovieByName } = this.props;
     searchMovieToAdd(e.target.value);
-    getMoviePoster(e.target.value);
+    getInfosMovieByName(e.target.value);
   };
 
-  handleChoosePoster = e => {
+  handleChoosePoster = idMovie => {
     const { getInfosMovie } = this.props;
-    const idMovie = e.target.id;
     getInfosMovie(idMovie);
-  };
-
-  handleAddMovie = e => {
-    const { addMovie, moviesList, infosMovie } = this.props;
-    addMovie(infosMovie, moviesList);
   };
 
   render() {
     const {
-      moviePoster,
+      infosMovieByName,
       infosMovie,
-      msgAddMovie,
-      nameMovieToAdd,
-      showInfosMovie
+      nameMovieToAdd
     } = this.props;
 
     return (
@@ -71,124 +59,43 @@ class AddMovie extends Component {
               </div>
             </div>
             <div className="row justify-content-center m-2">
-              <button type="button" className="btn btnBackToCollection m-2">
-                <Link to="/collection">
+              <button type="button" className="btn m-2 backToCollectionBtn">
+                <Link to="/collection" className="linkUnstyled">
                   <div className="d-inline p-1">
-                    <FontAwesomeIcon icon={faArrowLeft} className="iconBrown" />
+                    <FontAwesomeIcon icon={faArrowLeft} className="icon" />
                   </div>
-                  BACK TO MY COLLECTION
+                  Back to my collection
                 </Link>
               </button>
             </div>
-            {//Display message movie added or not
-            msgAddMovie.title !== "" && !nameMovieToAdd.length && (
-              <div className="row justify-content-center">
-                <div className="col-12 col-sm-6 col-md-4">
-                  <div className="alert alert-info msgAddMovie" role="alert">
-                    <h4 className="alert-heading title">{msgAddMovie.title}</h4>
-                    <hr />
-                    <p className="text">{msgAddMovie.text}</p>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
-          {moviePoster.length && !showInfosMovie && (
+          {infosMovieByName.length && (
             // Poster list according to search
             <div className="moviesPosterContainer container-fluid ">
               <div className="row justify-content-center ">
-                {moviePoster.map(
-                  poster =>
-                    poster.poster_path && (
+                {infosMovieByName.map(
+                  movie =>
+                    movie.link_poster && (
                       <div
-                        className="col-12 col-sm-6 col-md-3 col-lg-2 poster-movie"
-                        key={poster.id}
-                        value={poster.poster_path}
-                        onClick={this.handleChoosePoster}
+                        key={movie.id}
+                        className="col-6 col-sm-6 col-md-3 col-lg-2 pt-3 pb-3 pl-0 pr-0"
+                        data-toggle="modal"
+                        data-target={`#targ${movie.id_movie}`}
                       >
                         <img
-                          src={`https://image.tmdb.org/t/p/original/${
-                            poster.poster_path
-                          }`}
+                          src={movie.link_poster}
+                          className="moviePoster"
                           alt="Movie poster"
-                          name={poster.title}
-                          id={poster.id}
+                          onClick={() => this.handleChoosePoster(movie.id)}
+                        />
+                        <div className="nameMovie">{movie.name}</div>
+                        <MovieModal
+                          movie={infosMovie}
+                          isToAdd={true}
                         />
                       </div>
                     )
                 )}
-              </div>
-            </div>
-          )}
-          {showInfosMovie && (
-            // Movie infos after click on poster
-            <div className="infosMovieContainer container-fluid">
-              <div className="row text-center text-md-right">
-                <div className="col-12 col-md-4">
-                  <img
-                    src={infosMovie.link_poster}
-                    alt={`Movie poster ${infosMovie.name}`}
-                    name={infosMovie.name}
-                  />
-                </div>
-                <div className="col-12 col-md-8">
-                  <div className="row textInfos text-center text-md-left p-3">
-                    <div className="col-12 m-2">
-                      <h3>{infosMovie.name}</h3>
-                    </div>
-                    <div className="col-12 m-1">
-                      <span className="titleInfos">
-                        <b>Category : </b>
-                      </span>
-                      <span className="textInfos">
-                        {infosMovie.category || "N/A"}
-                      </span>
-                    </div>
-                    <div className="col-12 m-1">
-                      <span className="titleInfos">
-                        <b>Synopsis : </b>
-                      </span>
-                      <span className="textInfos">
-                        {infosMovie.synopsis || "N/A"}
-                      </span>
-                    </div>
-                    <div className="col-12 m-1">
-                      <span className="titleInfos">
-                        <b>Director : </b>
-                      </span>
-                      <span className="textInfos">
-                        {infosMovie.director || "N/A"}
-                      </span>
-                    </div>
-                    <div className="col-12 m-1">
-                      <span className="titleInfos">
-                        <b>Release date : </b>
-                      </span>
-                      <span className="textInfos">
-                        {infosMovie.release_date || "N/A"}
-                      </span>
-                    </div>
-                    <div className="col-12 m-1">
-                      <span className="titleInfos">
-                        <b>Duration : </b>
-                      </span>
-                      <span className="textInfos">
-                        {convertMinsToHrsMins(infosMovie.duration) || "N/A"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row justify-content-center m-4">
-                <div className="col-12">
-                  <button
-                    type="button"
-                    className="btn btnAddMovie"
-                    onClick={this.handleAddMovie}
-                  >
-                    Add the movie
-                  </button>
-                </div>
               </div>
             </div>
           )}
@@ -199,23 +106,18 @@ class AddMovie extends Component {
 }
 
 const mapStateToProps = state => ({
-  moviesList: state.movieReducer.moviesList,
   categoriesList: state.movieReducer.categoriesList,
-  moviePoster: state.movieReducer.moviePoster,
+  infosMovieByName: state.movieReducer.infosMovieByName,
   infosMovie: state.movieReducer.infosMovie,
-  msgAddMovie: state.movieReducer.msgAddMovie,
-  nameMovieToAdd: state.movieReducer.nameMovieToAdd,
-  showInfosMovie: state.movieReducer.showInfosMovie
+  nameMovieToAdd: state.movieReducer.nameMovieToAdd
 });
 
 export default connect(
   mapStateToProps,
   {
     getMoviesList,
-    getCategoriesList,
-    getMoviePoster,
+    getInfosMovieByName,
     getInfosMovie,
-    addMovie,
     searchMovieToAdd
   }
 )(AddMovie);
