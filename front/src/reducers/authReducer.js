@@ -4,7 +4,8 @@ import {
   SIGN_IN,
   SIGN_UP,
   SIGN_OUT,
-  GET_PROFILE_FETCH
+  GET_PROFILE_FETCH,
+  RESET_TOAST_MESSAGE
 } from "../actions/types";
 
 const initialState = {
@@ -12,9 +13,10 @@ const initialState = {
   formSignUp: { email: "", pseudo: "", password: "", passwordBis: "" },
   isAuthenticated: false,
   isRegister: false,
-  msgFailedLogin:"",
+  msgFailedLogin: "",
   msgSignUp: "",
-  pseudo: ""
+  pseudo: "",
+  toastMsg: { title: "", text: "" }
 };
 
 export default function(state = initialState, action) {
@@ -35,14 +37,16 @@ export default function(state = initialState, action) {
         formSignIn: action.formSignIn,
         pseudo: action.pseudo,
         isAuthenticated: action.isAuthenticated,
-        msgFailedLogin: action.msgFailedLogin
+        msgFailedLogin: action.msgFailedLogin,
+        toastMsg: action.toastMsg
       };
     case SIGN_UP:
       return {
         ...state,
         formSignUp: action.formSignUp,
         msgSignUp: action.msgSignUp,
-        isRegister: action.isRegister
+        isRegister: action.isRegister,
+        toastMsg: action.toastMsg
       };
     case SIGN_OUT:
       return {
@@ -53,6 +57,11 @@ export default function(state = initialState, action) {
         ...state,
         isAuthenticated: action.isAuthenticated,
         pseudo: action.pseudo
+      };
+    case RESET_TOAST_MESSAGE:
+      return {
+        ...state,
+        toastMsg: action.toastMsg
       };
     default:
       return state;

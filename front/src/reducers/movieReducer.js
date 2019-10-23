@@ -4,12 +4,13 @@ import {
   GET_CATEGORIES_LIST,
   GET_MOVIE_BY_CATEGORY,
   GET_RANDOM_MOVIE,
-  GET_MOVIE_POSTER,
+  GET_INFOS_MOVIE_BY_NAME,
   GET_INFOS_MOVIE,
   ADD_MOVIE,
   DELETE_MOVIE,
   SEARCH_MOVIE_TO_ADD,
-  SEARCH_MOVIE_IN_COLLECTION
+  SEARCH_MOVIE_IN_COLLECTION,
+  RESET_TOAST_MESSAGE
 } from "../actions/types";
 
 const initialState = {
@@ -18,13 +19,12 @@ const initialState = {
   categoriesList: [],
   movieByCategory: [],
   categoriesSelect: [],
-  moviePoster: {},
+  infosMovieByName: {},
   infosMovie: {},
+  randomMovie: {},
   nameMovieSearch: "",
   nameMovieToAdd: "",
-  msgAddMovie: { title: "", text: "" },
-  msgDeletedMovie: { title: "", text: "" },
-  showInfosMovie: false
+  toastMsg: { title: "", text: "" }
 };
 
 export default function(state = initialState, action) {
@@ -54,26 +54,26 @@ export default function(state = initialState, action) {
         categoriesSelect: action.categoriesSelect
       };
     case GET_RANDOM_MOVIE:
+      const randomMovie =
+        state.moviesList[Math.floor(Math.random() * state.moviesList.length)];
       return {
         ...state,
-        moviesListFiltered: action.moviesListFiltered
+        randomMovie: randomMovie
       };
-    case GET_MOVIE_POSTER:
+    case GET_INFOS_MOVIE_BY_NAME:
       return {
         ...state,
-        moviePoster: action.getMoviePoster,
-        showInfosMovie: action.showInfosMovie
+        infosMovieByName: action.infosMovieByName
       };
     case GET_INFOS_MOVIE:
       return {
         ...state,
-        infosMovie: action.getInfosMovie,
-        showInfosMovie: action.showInfosMovie
+        infosMovie: action.infosMovie
       };
     case ADD_MOVIE:
       return {
         ...state,
-        msgAddMovie: action.msgAddMovie,
+        toastMsg: action.toastMsg,
         nameMovieToAdd: action.nameMovieToAdd
       };
     case DELETE_MOVIE:
@@ -82,13 +82,13 @@ export default function(state = initialState, action) {
       );
       return {
         ...state,
-        msgDeletedMovie: action.msgDeletedMovie,
+        toastMsg: action.toastMsg,
         moviesListFiltered: newListAfterDelete
       };
     case SEARCH_MOVIE_TO_ADD:
       return {
         ...state,
-        msgAddMovie: action.msgAddMovie,
+        toastMsg: action.toastMsg,
         nameMovieToAdd: action.nameMovieToAdd
       };
     case SEARCH_MOVIE_IN_COLLECTION:
@@ -99,6 +99,11 @@ export default function(state = initialState, action) {
         ...state,
         moviesListFiltered: state.moviesListFiltered,
         categoriesSelect: action.categoriesSelect
+      };
+    case RESET_TOAST_MESSAGE:
+      return {
+        ...state,
+        toastMsg: action.toastMsg,
       };
     default:
       return state;

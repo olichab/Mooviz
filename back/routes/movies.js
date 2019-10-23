@@ -38,41 +38,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Random movie
-// Ex: http://localhost:3001/V1/api/movies/random
-
-router.get("/random", async (req, res) => {
-  const id_user = decodeIdUserFromToken(req);
-  try {
-    const result = await knex({
-      m: "Movies",
-      c: "Categories",
-      u: "Users",
-      um: "Users_Movies"
-    })
-      .select(
-        "m.id_movie",
-        "m.name",
-        "m.director",
-        "m.synopsis",
-        "m.link_poster",
-        "m.release_date",
-        "m.duration",
-        "c.name_category"
-      )
-      .whereRaw("m.id_category = c.id_category")
-      .whereRaw("um.id_user = u.id_user")
-      .whereRaw("um.id_movie = m.id_movie")
-      .andWhere("um.id_user", id_user)
-      .andWhere("um.is_active", 1)
-      .orderByRaw("RAND()")
-      .limit(1);
-    res.status(200).send(result);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
 // Delete a movie
 // Ex: http://localhost:3001/V1/api/movies/deletemovie/:id
 
@@ -107,7 +72,7 @@ router.post("/newmovie", async (req, res) => {
   const release_date = !isNaN(Date.parse(req.body.release_date))
     ? req.body.release_date
     : null;
-  const category = req.body.category.length ? req.body.category : "No category";
+  const category = req.body.name_category.length ? req.body.name_category : "No category";
   const id_user = decodeIdUserFromToken(req);
 
   /**
@@ -225,7 +190,7 @@ router.post("/newmovie", async (req, res) => {
           switch (isActive) {
             // If user has already added movie and it is active
             case 1:
-              return res.statut(200).json("Movie already in your collection");
+              return res.status(200).json("Movie already in your collection");
             // If user has already added movie but it is inactive
             case 0:
               updateIsActiveField(idMovie, id_user);

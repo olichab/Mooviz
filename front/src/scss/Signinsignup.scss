@@ -3,36 +3,61 @@
 @import "./helpers/forms";
 @import "./helpers/media.scss";
 
-.signInContainer, .signUpContainer {
-  padding: 20px 0 30px 0;
-  margin: auto;
-  color: $white;
-  label {
-    @include font-18;
-  }
-  input {
-    @include input-white;
-    width: 50%;
-  }
-  .btnSignIn,
-  .btnSignUp {
-    @include font-18;
-    background-color: $white;
-    color: $brown;
-    font-weight: 600;
-    a:hover {
-      text-decoration: none;
+.signInContainer,
+.signUpContainer {
+  color: $purple;
+  .imgSignIn, .imgSignUp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: radial-gradient($light-purple, $purple);
+    height: 40vh;
+    @include md {
+      height: 100vh;
+    }
+    img {
+      height: 65%;
+      @include md {
+        height: 40%;
+      }
+      @include xl {
+        height: 50%;
+      }
     }
   }
 
-  .msgFailed{
-    border: solid 1px $red;
-    padding: 10px;
-    color:$red;
-    @include font-20;
+  input {
+    @include whiteInput;
+    // Css autofill in chrome
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: $dark-purple;
+      @include font-14;
+    }
+  }
+  .btnSignIn,
+  .btnSignUp {
+    @include whiteBtn;
   }
 
-  a, a:hover{
-    color: $white;
+  .icon {
+    display: inline-block;
+    margin-left: 8px;
+  }
+
+  .msgFailed {
+    color: $red;
+    @include font-14;
+  }
+
+  a {
+    @include font-14;
+    color: $purple;
+    &:hover {
+      color: $purple;
+      text-decoration: underline;
+    }
   }
 }

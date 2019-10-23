@@ -13,6 +13,7 @@ import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
 import AddMovie from "./components/AddMovie";
 import Footer from "./components/Footer";
+import ToastMessage from "./components/ToastMessage";
 
 import "./App.scss";
 
@@ -23,7 +24,7 @@ class App extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, toastMsg, toastMsgAuth } = this.props;
 
     return (
       <div className="App">
@@ -46,6 +47,11 @@ class App extends Component {
               />
             </Switch>
             <Footer />
+            {(toastMsg.title !== "" || toastMsgAuth.title !== "") && (
+              <div>
+                <ToastMessage />
+              </div>
+            )}
           </div>
         </Router>
       </div>
@@ -54,7 +60,9 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.authReducer.isAuthenticated
+  isAuthenticated: state.authReducer.isAuthenticated,
+  toastMsg: state.movieReducer.toastMsg,
+  toastMsgAuth: state.authReducer.toastMsg
 });
 
 export default connect(
