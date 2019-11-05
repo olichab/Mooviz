@@ -1,14 +1,14 @@
-// Imports
+/**** Imports modules *****/
 let express = require("express");
 let router = express.Router();
 const knex = require("../db/knex");
-const decodeIdUserFromToken = require("../helpers/decodeIdUserFromToken");
+const decodeUserInfosFromToken = require("../helpers/decodeUserInfosFromToken");
 
 // List of all movie with categories
 // Ex: http://localhost:3001/V1/api/movies
 
 router.get("/", async (req, res) => {
-  const id_user = decodeIdUserFromToken(req);
+  const idUser = decodeUserInfosFromToken(req).id;
   try {
     const result = await knex({
       m: "Movies",
@@ -29,12 +29,12 @@ router.get("/", async (req, res) => {
       .whereRaw("m.id_category = c.id_category")
       .whereRaw("um.id_user = u.id_user")
       .whereRaw("um.id_movie = m.id_movie")
-      .andWhere("um.id_user", id_user)
+      .andWhere("um.id_user", idUser)
       .andWhere("um.is_active", 1)
       .orderBy("m.name");
     res.status(200).send(result);
   } catch (error) {
-    res.status(400).send(error);
+    console.error("error", error);
   }
 });
 
@@ -42,7 +42,7 @@ router.get("/", async (req, res) => {
 // Ex: http://localhost:3001/V1/api/movies/deletemovie/:id
 
 router.put("/deletemovie/:id", async (req, res) => {
-  const id_user = decodeIdUserFromToken(req);
+  const idUser = decodeUserInfosFromToken(req).id;
   const idMovie = Number(req.params.id);
   try {
     await knex({
@@ -53,14 +53,16 @@ router.put("/deletemovie/:id", async (req, res) => {
       .whereRaw("um.id_user = u.id_user")
       .whereRaw("um.id_movie = m.id_movie")
       .where("um.id_movie", "=", idMovie)
-      .andWhere("um.id_user", id_user)
+      .andWhere("um.id_user", idUser)
       .update({
         "um.is_active": 0,
         thisKeyIsSkipped: undefined
       });
-    res.status(200).json(idMovie);
+    res
+      .status(200)
+      .json({ id: idMovie, message: "The movie has been deleted" });
   } catch (error) {
-    res.status(400).send(error);
+    console.error("error", error);
   }
 });
 
@@ -72,8 +74,10 @@ router.post("/newmovie", async (req, res) => {
   const release_date = !isNaN(Date.parse(req.body.release_date))
     ? req.body.release_date
     : null;
-  const category = req.body.name_category.length ? req.body.name_category : "No category";
-  const id_user = decodeIdUserFromToken(req);
+  const category = req.body.name_category.length
+    ? req.body.name_category
+    : "No category";
+  const idUser = decodeUserInfosFromToken(req).id;
 
   /**
    * Search a movie in DB and return his id
@@ -82,12 +86,12 @@ router.post("/newmovie", async (req, res) => {
    */
   const checkMovieInDb = async name => {
     try {
-      const resQueryIdMovie = await knex("Movies")
+      const result = await knex("Movies")
         .select("id_movie")
-        .where("name", name);
-      return resQueryIdMovie.length ? resQueryIdMovie[0].id_movie : null;
+        .where({ name: name });
+      return result.length ? result[0].id_movie : null;
     } catch (error) {
-      res.status(400).send(error);
+      console.error("error", error);
     }
   };
 
@@ -99,7 +103,7 @@ router.post("/newmovie", async (req, res) => {
    */
   const checkIfMovieIsActiveForUser = async (idMovie, idUser) => {
     try {
-      const resQueryCheckIsActive = await knex({
+      const result = await knex({
         m: "Movies",
         u: "Users",
         um: "Users_Movies"
@@ -109,11 +113,9 @@ router.post("/newmovie", async (req, res) => {
         .whereRaw("um.id_movie = m.id_movie")
         .andWhere("um.id_movie", idMovie)
         .andWhere("u.id_user", idUser);
-      return resQueryCheckIsActive.length
-        ? resQueryCheckIsActive[0].is_active
-        : null;
+      return result.length ? result[0].is_active : null;
     } catch (error) {
-      res.status(400).send(error);
+      console.error("error", error);
     }
   };
 
@@ -135,36 +137,37 @@ router.post("/newmovie", async (req, res) => {
           thisKeyIsSkipped: undefined
         });
     } catch (error) {
-      res.status(400).send(error);
+      console.error("error", error);
     }
   };
 
   /**
    * Assign a movie to a user
-   * @param {Number} id_user id user
-   * @param {Number} id_movie id movie
+   * @param {Number} idUser id user
+   * @param {Number} idMovie id movie
    */
-  const assignMovieToUser = async (id_user, id_movie) => {
+  const assignMovieToUser = async (idMovie, idUser) => {
     try {
-      await knex("Users_Movies").insert({ id_user, id_movie });
+      await knex("Users_Movies").insert([
+        { id_user: idUser, id_movie: idMovie }
+      ]);
     } catch (error) {
-      res.status(400).send(error);
+      console.error("error", error);
     }
   };
 
   /**
    * Insert movie in DB
-   * @param {Number} id_user id user
-   * @param {Number} id_movie id movie
-   * @returns {Number} is active (0 or 1) or null
+   * @param {String} categoryName category name
+   * @returns {Number} id movie
    */
   const addMovieInDb = async categoryName => {
     try {
       // select id category
-      const resQueryIdCategory = await knex("Categories")
+      const category = await knex("Categories")
         .select("id_category")
-        .where("name_category", "=", categoryName);
-      const id_category = resQueryIdCategory[0].id_category;
+        .where({ name_category: categoryName });
+      const id_category = category[0].id_category;
       const fixDataMovies = {
         name,
         director,
@@ -175,10 +178,10 @@ router.post("/newmovie", async (req, res) => {
         id_category
       };
       // insert in movie table
-      const resQueryInsertMovie = await knex("Movies").insert(fixDataMovies);
-      return resQueryInsertMovie[0];
+      const result = await knex("Movies").insert(fixDataMovies);
+      return result[0];
     } catch (error) {
-      res.status(400).send(error);
+      console.error("error", error);
     }
   };
 
@@ -186,19 +189,19 @@ router.post("/newmovie", async (req, res) => {
     checkMovieInDb(name).then(idMovie => {
       // if idMovie find
       if (idMovie !== null) {
-        checkIfMovieIsActiveForUser(idMovie, id_user).then(isActive => {
+        checkIfMovieIsActiveForUser(idMovie, idUser).then(isActive => {
           switch (isActive) {
             // If user has already added movie and it is active
             case 1:
-              return res.status(200).json("Movie already in your collection");
+              return res.sendStatus(204);
             // If user has already added movie but it is inactive
             case 0:
-              updateIsActiveField(idMovie, id_user);
-              return res.status(201).send("Movie has been correctly added");
+              updateIsActiveField(idMovie, idUser);
+              return res.status(201).json({ message: "Movie has been added" });
             // If user has never added movie
             case null:
-              assignMovieToUser(id_user, idMovie);
-              return res.status(201).send("Movie has been correctly added");
+              assignMovieToUser(idMovie, idUser);
+              return res.status(201).json({ message: "Movie has been added" });
             default:
               break;
           }
@@ -206,13 +209,13 @@ router.post("/newmovie", async (req, res) => {
         //if idMovie not find
       } else {
         addMovieInDb(category).then(idMovie => {
-          assignMovieToUser(id_user, idMovie);
+          assignMovieToUser(idMovie, idUser);
         });
-        return res.status(201).send("Movie has been correctly added");
+        return res.status(201).json({ message: "Movie has been added" });
       }
     });
   } catch (error) {
-    res.status(400).send(error);
+    console.error("error", error);
   }
 });
 

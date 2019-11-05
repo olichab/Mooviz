@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,14 +20,13 @@ class Header extends Component {
   };
 
   render() {
-    const { isAuthenticated } = this.props;
-
+    const { isLogged } = this.props;
     return (
       <div className="Header">
         <nav className="navbar navbar-expand-lg fixed-top">
-          <a className="navbar-brand" href="/">
+          <Link className="navbar-brand" to="/">
             Mooviz
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -44,47 +44,52 @@ class Header extends Component {
           >
             <ul className="navbar-nav align-items-center">
               <li className="nav-item active mt-auto mb-auto">
-                <a className="nav-link homeLink" href="/">
+                <Link className="nav-link homeLink" to="/">
                   Home <span className="sr-only">(current)</span>
-                </a>
+                </Link>
               </li>
-              {!isAuthenticated ? (
+              {isLogged ? (
                 <>
                   <li className="nav-item mt-auto mb-auto">
-                    <a className="nav-link signinBtn" href="/signin">
-                      Sign in
-                      <span className="icon">
-                        <FontAwesomeIcon icon={faKey} />
-                      </span>
-                    </a>
+                    <Link className="nav-link collectionLink" to="/collection">
+                      My collection
+                    </Link>
+                  </li>
+                  <li className="nav-item mt-auto mb-auto">
+                    <Link className="nav-link profileLink" to="/profile">
+                      My profile
+                    </Link>
                   </li>
                   <li className="nav-item mt-2 mt-md-2 mt-lg-auto mb-auto">
-                    <a className="nav-link signupBtn" href="/signup">
-                      Sign up
+                    <Link
+                      className="nav-link signoutBtn"
+                      to="/signin"
+                      onClick={this.handleSignOut}
+                    >
+                      Signout
                       <span className="icon">
-                        <FontAwesomeIcon icon={faUserPlus} />
+                        <FontAwesomeIcon icon={faSignOutAlt} />
                       </span>
-                    </a>
+                    </Link>
                   </li>
                 </>
               ) : (
                 <>
                   <li className="nav-item mt-auto mb-auto">
-                    <a className="nav-link collectionLink" href="/collection">
-                      My collection
-                    </a>
+                    <Link className="nav-link signinBtn" to="/signin">
+                      Sign in
+                      <span className="icon">
+                        <FontAwesomeIcon icon={faKey} />
+                      </span>
+                    </Link>
                   </li>
                   <li className="nav-item mt-2 mt-md-2 mt-lg-auto mb-auto">
-                    <a
-                      className="nav-link signoutBtn"
-                      href="/"
-                      onClick={this.handleSignOut}
-                    >
-                      Sign out
+                    <Link className="nav-link signupBtn" to="/signup">
+                      Sign up
                       <span className="icon">
-                        <FontAwesomeIcon icon={faSignOutAlt} />
+                        <FontAwesomeIcon icon={faUserPlus} />
                       </span>
-                    </a>
+                    </Link>
                   </li>
                 </>
               )}
@@ -97,7 +102,7 @@ class Header extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.authReducer.isAuthenticated
+  isLogged: state.authReducer.isLogged
 });
 
 export default connect(

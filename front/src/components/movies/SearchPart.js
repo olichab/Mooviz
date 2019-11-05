@@ -11,11 +11,11 @@ import {
   clearMoviesList,
   getRandomMovie,
   searchMovieInCollection
-} from "../actions/movieAction";
+} from "../../actions/movieAction";
 
 import MovieModal from "./MovieModal";
 
-import "../scss/SearchPart.scss";
+import "../../scss/SearchPart.scss";
 
 class SearchPart extends Component {
   componentDidMount() {
@@ -49,10 +49,10 @@ class SearchPart extends Component {
   };
 
   render() {
-    const { categoriesList, categoriesSelect, randomMovie } = this.props;
+    const { categoriesList, categoriesSelect, randomMovie, nameMovieSearch } = this.props;
 
     return (
-      <div className="SearchPart container-fluid">
+      <div className="container-fluid SearchPart">
         <div className="row justify-content-center mt-3 mb-3">
           <div className="col col-md-9 col-lg-6">
             <div className="input-group flex-nowrap">
@@ -63,6 +63,7 @@ class SearchPart extends Component {
                 aria-label="film name"
                 aria-describedby="addon-wrapping"
                 onChange={this.handeSearchMovieInCollection}
+                value={nameMovieSearch}
               />
             </div>
           </div>
@@ -104,7 +105,7 @@ class SearchPart extends Component {
             ))
           ) : (
             <div>
-              <p className="p-0 m-2 noCategory">No category find</p>
+              <p className="p-0 m-2 noCategory">No category found</p>
             </div>
           )}
         </div>
@@ -140,7 +141,8 @@ const mapStateToProps = state => ({
   categoriesList: state.movieReducer.categoriesList,
   movieByCategory: state.movieReducer.movieByCategory,
   categoriesSelect: state.movieReducer.categoriesSelect,
-  randomMovie: state.movieReducer.randomMovie
+  randomMovie: state.movieReducer.randomMovie,
+  nameMovieSearch: state.movieReducer.nameMovieSearch
 });
 
 export default connect(
