@@ -20,3 +20,7 @@ export const SIGN_UP = "SIGN_UP";
 export const SIGN_OUT = "SIGN_OUT";
 export const GET_PROFILE_FETCH = "GET_PROFILE_FETCH";
 
+// USER
+export const GET_USER_INFOS = "GET_USER_INFOS";
+export const UPDATE_FORM_PROFILE = "UPDATE_FORM_PROFILE";
+export const SAVE_UPDATE_PROFILE = "SAVE_UPDATE_PROFILE";

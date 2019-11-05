@@ -63,20 +63,19 @@ export const signIn = formSignIn => dispatch => {
       localStorage.setItem("token", res.headers["x-access-token"]);
       dispatch({
         type: SIGN_IN,
-        formSignIn: { email: "", password: "" },
-        isAuthenticated: true,
-        msgFailedLogin: "",
+        isLogged: true,
+        pseudo: res.data,
         toastMsg: {
           title: "Hello",
           text: "Happy to see you again"
-        }
+        },
       });
     })
     .catch(error => {
       dispatch({
         type: SIGN_IN,
         formSignIn: formSignIn,
-        msgFailedLogin: error.response.data.message
+        failedMsg: (error.response && error.response.data) ? error.response.data.message: ""
       });
     });
 };
@@ -95,14 +94,12 @@ export const signUp = formSignUp => dispatch => {
     url,
     data: body
   })
-    .then(res => {
+    .then(() => {
       dispatch({
         type: SIGN_UP,
-        formSignUp: { email: "", pseudo: "", password: "", passwordBis: "" },
-        msgSignUp: res.data.message,
         isRegister: true,
         toastMsg: {
-          title: "Welcom",
+          title: "Welcome",
           text: "Happy to count to you among us"
         }
       });
@@ -111,7 +108,7 @@ export const signUp = formSignUp => dispatch => {
       dispatch({
         type: SIGN_UP,
         formSignUp: formSignUp,
-        msgSignUp: error.response.data.message
+        failedMsg: (error.response && error.response.data) ? error.response.data.message: ""
       });
     });
 };
@@ -119,33 +116,46 @@ export const signUp = formSignUp => dispatch => {
 export const signOut = () => dispatch => {
   localStorage.clear();
   dispatch({
-    type: SIGN_OUT
+    type: SIGN_OUT,
+    isLogged: false
   });
 };
 
 export const getProfileFetch = () => dispatch => {
   const url = `${domain}/auth/profilefetch`;
   const token = localStorage.token;
+
   const body = {
     token
   };
-  if (token !== undefined) {
+  if (token) {
     axios({
       method: "POST",
       url,
       data: body
-    }).then(res => {
-      dispatch({
-        type: GET_PROFILE_FETCH,
-        isAuthenticated: true,
-        pseudo: res.data
+    })
+      .then(res => {
+        if (res.data) {
+          dispatch({
+            type: GET_PROFILE_FETCH,
+            pseudo: res.data,
+            isLogged: true
+          });
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        dispatch({
+          type: GET_PROFILE_FETCH,
+          pseudo: "",
+          isLogged: false
+        });
       });
-    });
   } else {
     dispatch({
       type: GET_PROFILE_FETCH,
-      isAuthenticated: false,
-      pseudo: ""
+      pseudo: "",
+      isLogged: false
     });
   }
 };

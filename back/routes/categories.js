@@ -1,8 +1,8 @@
-// Imports
+/**** Imports modules *****/
 let express = require("express");
 let router = express.Router();
 const knex = require("../db/knex");
-const decodeIdUserFromToken = require("../helpers/decodeIdUserFromToken");
+const decodeUserInfosFromToken = require("../helpers/decodeUserInfosFromToken");
 
 // List of all category
 // Ex: http://localhost:3001/V1/api/categories
@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
     const result = await knex("Categories").select();
     res.status(200).send(result);
   } catch (error) {
-    res.status(400).send(error);
+    console.error("error", error);
   }
 });
 
@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
 
 router.get("/filtered", async (req, res) => {
   const nameCategories = req.query.categories.split(",");
-  const id_user = decodeIdUserFromToken(req);
+  const idUser = decodeUserInfosFromToken(req).id;
   try {
     const result = await knex({
       m: "Movies",
@@ -42,13 +42,13 @@ router.get("/filtered", async (req, res) => {
       .whereRaw("m.id_category = c.id_category")
       .whereRaw("um.id_user = u.id_user")
       .whereRaw("um.id_movie = m.id_movie")
-      .andWhere("um.id_user", id_user)
+      .andWhere("um.id_user", idUser)
       .andWhere("um.is_active", 1)
       .whereIn("c.name_category", nameCategories)
       .orderBy("m.name");
     res.status(200).send(result);
   } catch (error) {
-    res.status(400).send(error);
+    console.error("error", error);
   }
 });
 

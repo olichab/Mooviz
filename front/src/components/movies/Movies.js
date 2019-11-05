@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { getMoviesList, searchMovieInCollection } from "../actions/movieAction";
+import { getMoviesList } from "../../actions/movieAction";
 
 import MoviePoster from "./MoviePoster";
 import MovieModal from "./MovieModal";
 
-import "../scss/Movies.scss";
+import "../../scss/Movies.scss";
 
 class Movies extends Component {
   componentDidMount() {
@@ -68,11 +68,10 @@ class Movies extends Component {
 const mapStateToProps = state => ({
   moviesList: state.movieReducer.moviesList,
   moviesListFiltered: state.movieReducer.moviesListFiltered,
-  nameMovieSearch: state.movieReducer.nameMovieSearch,
   pseudo: state.authReducer.pseudo
 });
 
 export default connect(
   mapStateToProps,
-  { getMoviesList, searchMovieInCollection }
+  { getMoviesList }
 )(Movies);

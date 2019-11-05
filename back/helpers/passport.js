@@ -1,3 +1,4 @@
+/**** Imports modules *****/
 const knex = require("../db/knex");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
@@ -6,6 +7,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
 
+/**** Environment variables *****/
 const jwtSecret = process.env.JWT_SECRET;
 
 /**** PASSPORT LOCAL AUTHENTICATION *****/
@@ -20,8 +22,8 @@ passport.use(
     },
     (email, password, cb) => {
       knex("Users")
-        .select("id_user", "password", "pseudo")
-        .where("email", "=", email)
+        .select("id_user", "pseudo", "email", "password")
+        .where({ email: email })
         .andWhere("is_active", "=", 1)
         .then(user => {
           if (!user || !user.length)
@@ -48,15 +50,14 @@ passport.use(
     try {
       knex("Users")
         .select("id_user")
-        .where("id_user", "=", token.id)
-        .andWhere("pseudo", "=", token.pseudo)
-        .andWhere("is_active", "=", 1)
+        .where({ id_user: token.id })
+        .andWhere({ is_active: 1 })
         .then(user => {
           if (user) {
-            // console.log("user found in db");
+            // User found in db;
             return cb(null, user);
           } else {
-            // console.log("user not found in db");
+            // User not found in db;
             return cb(null, false);
           }
         });

@@ -1,0 +1,49 @@
+@import "./helpers/colors";
+@import "./helpers/fonts";
+@import "./helpers/forms";
+@import "./helpers/media.scss";
+
+.Profile {
+  padding: 20px 0 30px 0;
+  margin: auto;
+  .card {
+    .card-header {
+      color: $white;
+      background-color: $purple;
+    }
+    .card-body {
+      .card-title {
+        color: $purple;
+      }
+
+      hr {
+        border-color: rgba($light-purple, 0.5);
+      }
+
+      .input-group-text {
+        padding: 6px 6px;
+        background-color: rgba($light-purple, 0.5);
+        .icon {
+          color: $white;
+          @include font-16;
+        }
+      }
+    }
+  }
+
+  .linkUnstyled {
+    @include linkUnstyled;
+  }
+
+  .failedMsg {
+    color: $red;
+    @include font-14;
+  }
+
+  .resetPasswordBtn {
+    @include whiteBtn;
+  }
+  .saveBtn, .cancelBtn {
+    @include purpleBtn;
+  }
+}

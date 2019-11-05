@@ -6,7 +6,8 @@
 .signInContainer,
 .signUpContainer {
   color: $purple;
-  .imgSignIn, .imgSignUp {
+  .imgSignIn,
+  .imgSignUp {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,6 +38,18 @@
       @include font-14;
     }
   }
+
+  .input-group-text {
+    padding: 6px 6px;
+    border: solid 1px $purple;
+    background-color: rgba($light-purple, 0.5);
+    // background-color: $light-purple;
+    .iconEye {
+      color: $white;
+      @include font-16;
+    }
+  }
+
   .btnSignIn,
   .btnSignUp {
     @include whiteBtn;
@@ -47,7 +60,7 @@
     margin-left: 8px;
   }
 
-  .msgFailed {
+  .failedMsg {
     color: $red;
     @include font-14;
   }

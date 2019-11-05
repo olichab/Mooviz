@@ -4,11 +4,11 @@ import dateFormat from "dateformat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt, faRandom } from "@fortawesome/free-solid-svg-icons";
 
-import convertMinsToHrsMins from "../helpers/convertMinsToHrsMins";
+import convertMinsToHrsMins from "../../helpers/convertMinsToHrsMins";
 
-import { deleteMovie, getRandomMovie, addMovie } from "../actions/movieAction";
+import { deleteMovie, getRandomMovie, addMovie } from "../../actions/movieAction";
 
-import "../scss/MovieModal.scss";
+import "../../scss/MovieModal.scss";
 
 class MovieModal extends Component {
   handleDeleteMovie = () => {
