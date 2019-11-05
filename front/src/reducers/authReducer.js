@@ -11,12 +11,11 @@ import {
 const initialState = {
   formSignIn: { email: "", password: "" },
   formSignUp: { email: "", pseudo: "", password: "", passwordBis: "" },
-  isAuthenticated: false,
+  toastMsg: { title: "", text: "" },
+  failedMsg: "",
   isRegister: false,
-  msgFailedLogin: "",
-  msgSignUp: "",
-  pseudo: "",
-  toastMsg: { title: "", text: "" }
+  isLogged: true ? true : false,
+  pseudo: ""
 };
 
 export default function(state = initialState, action) {
@@ -34,34 +33,39 @@ export default function(state = initialState, action) {
     case SIGN_IN:
       return {
         ...state,
-        formSignIn: action.formSignIn,
+        isLogged: action.isLogged,
         pseudo: action.pseudo,
-        isAuthenticated: action.isAuthenticated,
-        msgFailedLogin: action.msgFailedLogin,
-        toastMsg: action.toastMsg
+        formSignIn: action.formSignIn
+          ? action.formSignIn
+          : { email: "", password: "" },
+        failedMsg: action.failedMsg ? action.failedMsg : "",
+        toastMsg: action.toastMsg ? action.toastMsg : { title: "", text: "" }
       };
     case SIGN_UP:
       return {
         ...state,
-        formSignUp: action.formSignUp,
-        msgSignUp: action.msgSignUp,
+        formSignUp: action.formSignUp
+          ? action.formSignUp
+          : { email: "", pseudo: "", password: "", passwordBis: "" },
+        failedMsg: action.failedMsg ? action.failedMsg : "",
         isRegister: action.isRegister,
-        toastMsg: action.toastMsg
+        toastMsg: action.toastMsg ? action.toastMsg : { title: "", text: "" }
       };
     case SIGN_OUT:
       return {
-        ...state
+        ...state,
+        isLogged: action.isLogged
       };
     case GET_PROFILE_FETCH:
       return {
         ...state,
-        isAuthenticated: action.isAuthenticated,
-        pseudo: action.pseudo
+        pseudo: action.pseudo,
+        isLogged: action.isLogged
       };
     case RESET_TOAST_MESSAGE:
       return {
         ...state,
-        toastMsg: action.toastMsg
+        toastMsg: { title: "", text: "" }
       };
     default:
       return state;

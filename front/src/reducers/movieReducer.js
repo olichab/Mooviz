@@ -34,12 +34,12 @@ export default function(state = initialState, action) {
         ...state,
         moviesList: action.moviesList,
         moviesListFiltered: action.moviesList,
-        categoriesSelect: action.categoriesSelect
+        categoriesSelect: []
       };
     case CLEAR_MOVIES_LIST:
       return {
         ...state,
-        moviesListFiltered: action.moviesListFiltered,
+        moviesListFiltered: [],
         categoriesSelect: action.categoriesSelect
       };
     case GET_CATEGORIES_LIST:
@@ -50,7 +50,9 @@ export default function(state = initialState, action) {
     case GET_MOVIE_BY_CATEGORY:
       return {
         ...state,
-        moviesListFiltered: action.moviesListFiltered,
+        moviesListFiltered: action.moviesListFiltered
+          ? action.moviesListFiltered
+          : [],
         categoriesSelect: action.categoriesSelect
       };
     case GET_RANDOM_MOVIE:
@@ -73,22 +75,22 @@ export default function(state = initialState, action) {
     case ADD_MOVIE:
       return {
         ...state,
-        toastMsg: action.toastMsg,
-        nameMovieToAdd: action.nameMovieToAdd
+        nameMovieToAdd: "",
+        toastMsg: action.toastMsg ? action.toastMsg : { title: "", text: "" }
       };
     case DELETE_MOVIE:
-      let newListAfterDelete = state.moviesList.filter(
+      state.moviesList = state.moviesList.filter(
         e => e.id_movie !== action.idMovie
       );
       return {
         ...state,
-        toastMsg: action.toastMsg,
-        moviesListFiltered: newListAfterDelete
+        moviesListFiltered: state.moviesList,
+        nameMovieSearch: "",
+        toastMsg: action.toastMsg ? action.toastMsg : { title: "", text: "" }
       };
     case SEARCH_MOVIE_TO_ADD:
       return {
         ...state,
-        toastMsg: action.toastMsg,
         nameMovieToAdd: action.nameMovieToAdd
       };
     case SEARCH_MOVIE_IN_COLLECTION:
@@ -98,12 +100,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         moviesListFiltered: state.moviesListFiltered,
-        categoriesSelect: action.categoriesSelect
+        categoriesSelect: action.categoriesSelect,
+        nameMovieSearch: action.nameMovieSearch
       };
     case RESET_TOAST_MESSAGE:
       return {
         ...state,
-        toastMsg: action.toastMsg,
+        toastMsg: { title: "", text: "" }
       };
     default:
       return state;

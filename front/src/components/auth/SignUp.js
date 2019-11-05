@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserPlus,
+  faEye,
+  faEyeSlash
+} from "@fortawesome/free-solid-svg-icons";
 
 import imgSignUp from "../../img/sign_up.png";
 
@@ -11,6 +15,21 @@ import "../../scss/Signinsignup.scss";
 import { updateFormSignUp, signUp } from "../../actions/authAction";
 
 class SignUp extends Component {
+  state = {
+    hiddenPassword: true,
+    hiddenConfirmPassword: true
+  };
+
+  toggleShowPassword = () => {
+    const { hiddenPassword } = this.state;
+    this.setState({ hiddenPassword: !hiddenPassword });
+  };
+
+  toggleShowConfirmPassword = () => {
+    const { hiddenConfirmPassword } = this.state;
+    this.setState({ hiddenConfirmPassword: !hiddenConfirmPassword });
+  };
+
   updateForm = e => {
     const { updateFormSignUp, formSignUp } = this.props;
     const value = e.target.value;
@@ -25,10 +44,9 @@ class SignUp extends Component {
   };
 
   render() {
-    const { isRegister, msgSignUp } = this.props;
-    if (isRegister) {
-      return <Redirect to="/signin" />;
-    }
+    const { failedMsg } = this.props;
+    const { hiddenPassword, hiddenConfirmPassword } = this.state;
+
     return (
       <div className="container-fluid signUpContainer">
         <div className="row">
@@ -46,6 +64,7 @@ class SignUp extends Component {
                     placeholder="Email"
                     aria-label="email"
                     aria-describedby="addon-wrapping"
+                    autoComplete="username"
                     onChange={this.updateForm}
                     required
                   />
@@ -60,41 +79,74 @@ class SignUp extends Component {
                     placeholder="Pseudo"
                     aria-label="pseudo"
                     aria-describedby="addon-wrapping"
+                    autoComplete="username"
                     onChange={this.updateForm}
                     required
                   />
                 </div>
               </div>
               <div className="row justify-content-center">
-                <div className="col-10 col-md-9 col-lg-7 m-2">
+                <div className="col-10 col-md-9 col-lg-7 m-2 input-group">
                   <input
-                    type="password"
+                    type={hiddenPassword ? "password" : "text"}
                     id="password"
                     className="form-control"
                     placeholder="Password"
                     aria-label="password"
                     aria-describedby="addon-wrapping"
+                    autoComplete="new-password"
                     onChange={this.updateForm}
                   />
+                  <div className="input-group-append">
+                    <span
+                      className="input-group-text"
+                      onClick={this.toggleShowPassword}
+                    >
+                      {hiddenPassword ? (
+                        <FontAwesomeIcon className="iconEye" icon={faEye} />
+                      ) : (
+                        <FontAwesomeIcon
+                          className="iconEye"
+                          icon={faEyeSlash}
+                        />
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
               <div className="row justify-content-center">
-                <div className="col-10 col-md-9 col-lg-7 m-2">
+                <div className="col-10 col-md-9 col-lg-7 m-2 input-group">
                   <input
-                    type="password"
+                    type={hiddenConfirmPassword ? "password" : "text"}
                     id="passwordBis"
                     className="form-control"
                     placeholder="Confirm password"
                     aria-label="passwordBis"
                     aria-describedby="addon-wrapping"
+                    autoComplete="new-password"
                     onChange={this.updateForm}
                   />
+                  <div className="input-group-append">
+                    <span
+                      className="input-group-text"
+                      onClick={this.toggleShowConfirmPassword}
+                    >
+                      {hiddenConfirmPassword ? (
+                        <FontAwesomeIcon className="iconEye" icon={faEye} />
+                      ) : (
+                        <FontAwesomeIcon
+                          className="iconEye"
+                          icon={faEyeSlash}
+                        />
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
-              {msgSignUp && (
+              {failedMsg && (
                 <div className="row justify-content-center">
                   <div className="col-auto m-2 text-center">
-                    <span className="msgFailed">{msgSignUp}</span>
+                    <span className="failedMsg">{failedMsg}</span>
                   </div>
                 </div>
               )}
@@ -123,8 +175,7 @@ class SignUp extends Component {
 
 const mapStateToProps = state => ({
   formSignUp: state.authReducer.formSignUp,
-  msgSignUp: state.authReducer.msgSignUp,
-  isRegister: state.authReducer.isRegister
+  failedMsg: state.authReducer.failedMsg
 });
 
 export default connect(

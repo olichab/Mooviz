@@ -1,5 +1,4 @@
-/**** imports *****/
-
+/**** Imports modules *****/
 require("dotenv").config();
 const createError = require("http-errors");
 const express = require("express");
@@ -8,19 +7,9 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
-const passport = require("passport");
-require("./helpers/passport");
 const app = express();
 
-/**** routers *****/
-
-const indexRouter = require("./routes/index");
-const moviesRouter = require("./routes/movies");
-const categoriesRouter = require("./routes/categories");
-const authRouter = require("./routes/auth");
-
 const port = process.env.PORT || 3001;
-const version = process.env.VERSION;
 
 /**** modules use *****/
 app.use(cors());
@@ -30,7 +19,10 @@ app.use(
     extended: true
   })
 );
-app.use("/public", express.static("public"));
+
+// Routes
+const routes = require('./routes/router');
+app.use('/', routes);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -40,23 +32,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
-// routes
-app.use("/public", express.static("public"));
-app.use("/", indexRouter);
-app.use(`${version}/auth`, authRouter);
-
-// Protected routes
-app.use(
-  `${version}/movies`,
-  passport.authenticate("jwt", { session: false }),
-  moviesRouter
-);
-app.use(
-  `${version}/categories`,
-  passport.authenticate("jwt", { session: false }),
-  categoriesRouter
-);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -79,7 +54,7 @@ app.listen(port, err => {
   if (err) {
     throw new Error("Connection impossible");
   }
-  console.log(`Server is listening on ${port}`);
+  console.log(`Server is listening on port ${port}`);
 });
 
 module.exports = app;

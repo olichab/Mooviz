@@ -9,11 +9,11 @@ import {
   getInfosMovieByName,
   getInfosMovie,
   searchMovieToAdd
-} from "../actions/movieAction";
+} from "../../actions/movieAction";
 
 import MovieModal from "./MovieModal";
 
-import "../scss/AddMovie.scss";
+import "../../scss/AddMovie.scss";
 
 class AddMovie extends Component {
   componentDidMount() {
