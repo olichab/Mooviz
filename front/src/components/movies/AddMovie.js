@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import {
-  getMoviesList,
   getInfosMovieByName,
   getInfosMovie,
   searchMovieToAdd
@@ -16,10 +15,6 @@ import MovieModal from "./MovieModal";
 import "../../scss/AddMovie.scss";
 
 class AddMovie extends Component {
-  componentDidMount() {
-    this.props.getMoviesList();
-  }
-
   handleSearchMovieToAdd = e => {
     const { searchMovieToAdd, getInfosMovieByName } = this.props;
     searchMovieToAdd(e.target.value);
@@ -32,11 +27,7 @@ class AddMovie extends Component {
   };
 
   render() {
-    const {
-      infosMovieByName,
-      infosMovie,
-      nameMovieToAdd
-    } = this.props;
+    const { infosMovieByName, infosMovie, nameMovieToAdd } = this.props;
 
     return (
       <div>
@@ -69,11 +60,11 @@ class AddMovie extends Component {
               </button>
             </div>
           </div>
-          {infosMovieByName.length && (
-            // Poster list according to search
-            <div className="moviesPosterContainer container-fluid ">
-              <div className="row justify-content-center ">
-                {infosMovieByName.map(
+          <div className="moviesPosterContainer container-fluid ">
+            <div className="row justify-content-center ">
+              {infosMovieByName.length &&
+                // Poster list according to search
+                infosMovieByName.map(
                   movie =>
                     movie.link_poster && (
                       <div
@@ -89,16 +80,12 @@ class AddMovie extends Component {
                           onClick={() => this.handleChoosePoster(movie.id)}
                         />
                         <div className="nameMovie">{movie.name}</div>
-                        <MovieModal
-                          movie={infosMovie}
-                          isToAdd={true}
-                        />
+                        <MovieModal movie={infosMovie} isToAdd={true} />
                       </div>
                     )
                 )}
-              </div>
             </div>
-          )}
+          </div>
         </form>
       </div>
     );
@@ -106,7 +93,6 @@ class AddMovie extends Component {
 }
 
 const mapStateToProps = state => ({
-  categoriesList: state.movieReducer.categoriesList,
   infosMovieByName: state.movieReducer.infosMovieByName,
   infosMovie: state.movieReducer.infosMovie,
   nameMovieToAdd: state.movieReducer.nameMovieToAdd
@@ -115,7 +101,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    getMoviesList,
     getInfosMovieByName,
     getInfosMovie,
     searchMovieToAdd

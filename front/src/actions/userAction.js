@@ -22,6 +22,7 @@ export const getUserInfos = () => dispatch => {
     .then(res => {
       dispatch({
         type: GET_USER_INFOS,
+        loading: false,
         userInfos: { email: res.data[0].email, pseudo: res.data[0].pseudo },
         formProfile: {
           email: res.data[0].email,
