@@ -14,6 +14,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
+  loading: true,
   moviesList: [],
   moviesListFiltered: [],
   categoriesList: [],
@@ -32,6 +33,7 @@ export default function(state = initialState, action) {
     case GET_MOVIES_LIST:
       return {
         ...state,
+        loading: action.isLoading,
         moviesList: action.moviesList,
         moviesListFiltered: action.moviesList,
         categoriesSelect: []
@@ -50,6 +52,7 @@ export default function(state = initialState, action) {
     case GET_MOVIE_BY_CATEGORY:
       return {
         ...state,
+        loading: action.loading,
         moviesListFiltered: action.moviesListFiltered
           ? action.moviesListFiltered
           : [],

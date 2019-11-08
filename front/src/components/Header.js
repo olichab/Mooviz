@@ -43,7 +43,7 @@ class Header extends Component {
             id="navbarNavAltMarkup"
           >
             <ul className="navbar-nav align-items-center">
-              <li className="nav-item active mt-auto mb-auto">
+              <li className="nav-item active mt-auto mb-auto" >
                 <Link className="nav-link homeLink" to="/">
                   Home <span className="sr-only">(current)</span>
                 </Link>

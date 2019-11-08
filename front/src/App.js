@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import {
   Switch,
   Route,
@@ -7,21 +7,25 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { PrivateRoute } from "./helpers/PrivateRoute";
+import { PrivateRoute } from "./components/privateRoute/PrivateRoute";
 
 import { getProfileFetch } from "./actions/authAction";
+import "./App.scss";
+import Spinner from "./components/Spinner";
 
+import Header from "./components/Header";
 import SignIn from "./components/auth/SignIn";
 import SignUp from "./components/auth/SignUp";
-import Header from "./components/Header";
-import Home from "./components/Home";
-import Footer from "./components/Footer";
-import Collection from "./components/movies/Collection";
 import AddMovie from "./components/movies/AddMovie";
-import Profile from "./components/users/Profile";
+import Footer from "./components/Footer";
 import ToastMessage from "./components/ToastMessage";
+const Home = lazy(() => import("./components/Home"));
+const Collection = lazy(() => import("./components/movies/Collection"));
+const Profile = lazy(() => import("./components/users/Profile"));
 
-import "./App.scss";
+
+
+const renderSpinner = () => <Spinner />;
 
 class App extends Component {
   componentDidMount() {
@@ -30,12 +34,18 @@ class App extends Component {
   }
 
   render() {
-    const { isLogged, isRegister, toastMsg, toastMsgAuth, toastMsgUser } = this.props;
+    const {
+      isLogged,
+      isRegister,
+      toastMsg,
+      toastMsgAuth,
+      toastMsgUser
+    } = this.props;
     return (
       <div className="App">
         <Router>
-          <div>
             <Header />
+          <Suspense fallback={renderSpinner()}>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/signin">
@@ -44,18 +54,32 @@ class App extends Component {
               <Route path="/signup" component={SignUp}>
                 {isRegister ? <Redirect to="/signin" /> : <SignUp />}
               </Route>
-              <PrivateRoute path="/collection" component={Collection} isLogged={isLogged}/>
-              <PrivateRoute path="/addmovie" component={AddMovie} isLogged={isLogged}/>
-              <PrivateRoute path="/profile" component={Profile} isLogged={isLogged}/>
+              <PrivateRoute
+                path="/collection"
+                component={Collection}
+                isLogged={isLogged}
+              />
+              <PrivateRoute
+                path="/addmovie"
+                component={AddMovie}
+                isLogged={isLogged}
+              />
+              <PrivateRoute
+                path="/profile"
+                component={Profile}
+                isLogged={isLogged}
+              />
               <Route path="*" component={() => "404 NOT FOUND"} />
             </Switch>
+            </Suspense>
             <Footer />
-            {(toastMsg.title !== "" || toastMsgAuth.title !== "" || toastMsgUser.title !== "") && (
+            {(toastMsg.title !== "" ||
+              toastMsgAuth.title !== "" ||
+              toastMsgUser.title !== "") && (
               <div>
                 <ToastMessage />
               </div>
             )}
-          </div>
         </Router>
       </div>
     );
@@ -67,7 +91,7 @@ const mapStateToProps = state => ({
   isRegister: state.authReducer.isRegister,
   toastMsg: state.movieReducer.toastMsg,
   toastMsgAuth: state.authReducer.toastMsg,
-  toastMsgUser: state.userReducer.toastMsg,
+  toastMsgUser: state.userReducer.toastMsg
 });
 
 export default connect(
