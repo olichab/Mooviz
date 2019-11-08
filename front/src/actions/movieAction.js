@@ -32,6 +32,7 @@ export const getMoviesList = () => dispatch => {
     .then(res => {
       dispatch({
         type: GET_MOVIES_LIST,
+        loading: false,
         moviesList: res.data
       });
     })
@@ -226,7 +227,7 @@ export const addMovie = (state, moviesList) => dispatch => {
         type: ADD_MOVIE,
         toastMsg: {
           title: "Successful",
-          text: res.data ? res.data.message : ""
+          text: res.data ? res.data.message : "Toto"
         }
       });
     });

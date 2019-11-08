@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faRandom } from "@fortawesome/free-solid-svg-icons";
 
 import {
-  getCategoriesList,
   getMovieByCategory,
   getMoviesList,
   clearMoviesList,
@@ -18,11 +17,6 @@ import MovieModal from "./MovieModal";
 import "../../scss/SearchPart.scss";
 
 class SearchPart extends Component {
-  componentDidMount() {
-    const { getCategoriesList } = this.props;
-    getCategoriesList();
-  }
-
   handeSearchMovieInCollection = e => {
     const { searchMovieInCollection } = this.props;
     searchMovieInCollection(e.target.value);
@@ -49,11 +43,16 @@ class SearchPart extends Component {
   };
 
   render() {
-    const { categoriesList, categoriesSelect, randomMovie, nameMovieSearch } = this.props;
+    const {
+      categoriesList,
+      categoriesSelect,
+      randomMovie,
+      nameMovieSearch
+    } = this.props;
 
     return (
-      <div className="container-fluid SearchPart">
-        <div className="row justify-content-center mt-3 mb-3">
+      <div className="container SearchPart">
+        <div className="row justify-content-center ml-1 mr-1 mb-3">
           <div className="col col-md-9 col-lg-6">
             <div className="input-group flex-nowrap">
               <input
@@ -109,7 +108,7 @@ class SearchPart extends Component {
             </div>
           )}
         </div>
-        <div className="row justify-content-center mt-2">
+        <div className="row justify-content-center no-gutters">
           <Link to="/addmovie">
             <button type="button" className="btn m-2 addBtn">
               Add a movie
@@ -130,8 +129,8 @@ class SearchPart extends Component {
               <FontAwesomeIcon icon={faRandom} />
             </span>
           </button>
-          <MovieModal movie={randomMovie} isRandom={true}/>
         </div>
+        <MovieModal movie={randomMovie} isRandom={true} />
       </div>
     );
   }
@@ -148,7 +147,6 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    getCategoriesList,
     getMovieByCategory,
     getMoviesList,
     clearMoviesList,

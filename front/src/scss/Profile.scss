@@ -5,7 +5,6 @@
 
 .Profile {
   padding: 20px 0 30px 0;
-  margin: auto;
   .card {
     .card-header {
       color: $white;
@@ -40,10 +39,10 @@
     @include font-14;
   }
 
-  .resetPasswordBtn {
+  .cancelBtn {
     @include whiteBtn;
   }
-  .saveBtn, .cancelBtn {
+  .saveBtn, .resetPasswordBtn {
     @include purpleBtn;
   }
 }

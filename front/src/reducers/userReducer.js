@@ -6,6 +6,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
+  loading: true,
   userInfos: { email: "", pseudo: "" },
   formProfile: {
     email: "",
@@ -23,6 +24,7 @@ export default function(state = initialState, action) {
     case GET_USER_INFOS:
       return {
         ...state,
+        loading: action.loading,
         userInfos: action.userInfos ? action.userInfos : {},
         formProfile: action.formProfile
       };
