@@ -5,7 +5,6 @@
 
 .SearchPart {
   padding: 20px 0 30px 0;
-  // margin: auto;
 
   .searchBarFilm,
   .searchBarFilm:focus {
@@ -15,16 +14,20 @@
 
   .containerLabelCategory {
     margin: auto;
+
     .labelCategoryActive {
       @include label;
     }
+
     .inactive {
       text-decoration: line-through;
       opacity: 0.5;
     }
+
     @include md {
       width: 70%;
     }
+
     @include lg {
       width: 50%;
     }
@@ -32,7 +35,7 @@
 
   .addBtn,
   .randomBtn {
-    @include whiteBtn;
+    @include purpleBtn;
   }
 
   .icon {
