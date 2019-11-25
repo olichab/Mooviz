@@ -4,7 +4,6 @@
 .moviePoster {
   display: block;
   width: 90%;
-  height: 90%;
   border: solid $light-purple;
   border-width: 1px 1px 0 1px;
   border-radius: 5px 5px 0 0;
@@ -19,7 +18,7 @@
   border-radius: 0 0 5px 5px;
   color: $purple;
   @include font-12;
-  font-weight: 600;;
+  font-weight: 600;
   padding: 12px 18px;
   margin: auto;
   text-align: center;
