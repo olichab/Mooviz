@@ -20,23 +20,15 @@
     "react-scripts": "^3.2.0",
     "react-spinners": "^0.6.1",
     "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "airbnb",
-    "parser": "babel-eslint",
-    "rules": {
-      "react/jsx-filename-extension": [
-        "js",
-        "jsx"
-      ]
-    }
+    "eject": "react-scripts eject",
+    "build": "tsc",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "browserslist": [
     ">0.2%",
@@ -45,17 +37,29 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/bootstrap": "^4.3.1",
+    "@types/dateformat": "^3.0.1",
+    "@types/jest": "24.0.22",
+    "@types/jquery": "^3.3.31",
+    "@types/node": "12.12.7",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "16.9.4",
+    "@types/react-redux": "^7.1.5",
+    "@types/react-router-dom": "^5.1.2",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
     "babel-eslint": "^10.0.3",
-    "eslint": "6.1.0",
     "eslint-config-airbnb": "18.0.1",
     "eslint-config-jquery": "^2.0.0",
-    "eslint-plugin-flowtype": "^4.3.0",
+    "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-html": "^6.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jquery": "^1.5.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^1.7.0",
-    "prop-types": "^15.7.2"
+    "prettier": "^1.19.1",
+    "typescript": "^3.7.2"
   }
 }

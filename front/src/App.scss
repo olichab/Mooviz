@@ -1,8 +1,8 @@
 @import "./scss/helpers/colors.scss";
 
 html {
-    height: 100%;
-    width:100%;
+  height: 100%;
+  width: 100%;
 }
 
 .App {
@@ -12,5 +12,12 @@ html {
   padding-top: 75px;
   padding-bottom: 60px;
   font-family: "Merriweather";
+  button {
+    background-color: transparent;
+    border-width: 0;
+    &:focus {
+      box-shadow: none;
+      outline: 0;
+    }
+  }
 }
-
