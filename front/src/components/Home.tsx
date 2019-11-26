@@ -1,84 +1,38 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
 
 import '../scss/Home.scss';
+
+const imgHome = require('../img/home.svg');
 
 const Home: React.SFC = () => (
   <div className="container containerHome">
     <div className="row">
-      <div className="col">
-        <h1>Welcome to Mooviz</h1>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni quia
-          nobis iusto cum dicta, quos iure nemo sunt quae officia adipisci minus
-          tenetur aliquam quod accusantium quis commodi laborum quasi. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Et fugit nihil
-          officiis sed, mollitia voluptatem sunt consectetur illo laboriosam
-          nisi ut expedita pariatur non itaque possimus cum ex obcaecati iusto!
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci,
-          quas, vel id esse odio temporibus ex architecto quibusdam explicabo
-          rem maxime quod dicta ipsum neque! Voluptatibus recusandae facere sit
-          praesentium.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni quia
-          nobis iusto cum dicta, quos iure nemo sunt quae officia adipisci minus
-          tenetur aliquam quod accusantium quis commodi laborum quasi. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Et fugit nihil
-          officiis sed, mollitia voluptatem sunt consectetur illo laboriosam
-          nisi ut expedita pariatur non itaque possimus cum ex obcaecati iusto!
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci,
-          quas, vel id esse odio temporibus ex architecto quibusdam explicabo
-          rem maxime quod dicta ipsum neque! Voluptatibus recusandae facere sit
-          praesentium.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni quia
-          nobis iusto cum dicta, quos iure nemo sunt quae officia adipisci minus
-          tenetur aliquam quod accusantium quis commodi laborum quasi. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Et fugit nihil
-          officiis sed, mollitia voluptatem sunt consectetur illo laboriosam
-          nisi ut expedita pariatur non itaque possimus cum ex obcaecati iusto!
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci,
-          quas, vel id esse odio temporibus ex architecto quibusdam explicabo
-          rem maxime quod dicta ipsum neque! Voluptatibus recusandae facere sit
-          praesentium.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni quia
-          nobis iusto cum dicta, quos iure nemo sunt quae officia adipisci minus
-          tenetur aliquam quod accusantium quis commodi laborum quasi. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Et fugit nihil
-          officiis sed, mollitia voluptatem sunt consectetur illo laboriosam
-          nisi ut expedita pariatur non itaque possimus cum ex obcaecati iusto!
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci,
-          quas, vel id esse odio temporibus ex architecto quibusdam explicabo
-          rem maxime quod dicta ipsum neque! Voluptatibus recusandae facere sit
-          praesentium.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni quia
-          nobis iusto cum dicta, quos iure nemo sunt quae officia adipisci minus
-          tenetur aliquam quod accusantium quis commodi laborum quasi. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Et fugit nihil
-          officiis sed, mollitia voluptatem sunt consectetur illo laboriosam
-          nisi ut expedita pariatur non itaque possimus cum ex obcaecati iusto!
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci,
-          quas, vel id esse odio temporibus ex architecto quibusdam explicabo
-          rem maxime quod dicta ipsum neque! Voluptatibus recusandae facere sit
-          praesentium.
-        </p>
-        <p>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni quia
-          nobis iusto cum dicta, quos iure nemo sunt quae officia adipisci minus
-          tenetur aliquam quod accusantium quis commodi laborum quasi. Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Et fugit nihil
-          officiis sed, mollitia voluptatem sunt consectetur illo laboriosam
-          nisi ut expedita pariatur non itaque possimus cum ex obcaecati iusto!
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci,
-          quas, vel id esse odio temporibus ex architecto quibusdam explicabo
-          rem maxime quod dicta ipsum neque! Voluptatibus recusandae facere sit
-          praesentium.
-        </p>
+      <div className="col-12 col-md-4 p-4 title d-flex justify-content-center align-items-center">
+        <div className="row">
+          <div className="col-auto">
+            <h1>
+              <strong>Mooviz</strong>
+            </h1>
+            <br />
+            <h4>The easiest way to organize your movie collection</h4>
+          </div>
+          <div className="col-12 mt-5">
+            <button type="button" className="btn btnGoToCollection">
+              <Link to="/collection" className="linkUnstyled">
+                Go to my collection
+              </Link>
+              <span className="icon">
+                <FontAwesomeIcon icon={faLongArrowAltRight} />
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="col-12 col-md-8 p-4 imgHome d-flex justify-content-center align-items-center">
+        <img src={imgHome} alt="home" />
       </div>
     </div>
   </div>

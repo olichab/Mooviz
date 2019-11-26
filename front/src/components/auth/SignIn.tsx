@@ -10,7 +10,7 @@ import { AppState } from '../../store';
 import { updateFormSignIn, signIn } from '../../store/auth/authAction';
 import { IFormSignIn } from '../../store/auth/types';
 
-const imgSignIn = require('../../img/sign_in.png');
+const imgSignIn = require('../../img/sign_in.svg');
 
 interface ISignInProps {
   updateFormSignIn: Function;
@@ -50,7 +50,7 @@ class SignIn extends Component<ISignInProps> {
       <div className="container-fluid signInContainer">
         <div className="row">
           <div className="col-12 col-md-6 imgSignIn">
-            <img alt="icon" src={imgSignIn} />
+            <img alt="sign in" src={imgSignIn} />
           </div>
           <div className="col-12 col-md-6 p-4 my-auto">
             <form onSubmit={this.handleSignIn}>

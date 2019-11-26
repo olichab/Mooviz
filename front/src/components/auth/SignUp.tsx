@@ -13,7 +13,7 @@ import { AppState } from '../../store';
 import { updateFormSignUp, signUp } from '../../store/auth/authAction';
 import { IFormSignUp } from '../../store/auth/types';
 
-const imgSignUp = require('../../img/sign_up.png');
+const imgSignUp = require('../../img/sign_up.svg');
 
 interface ISignUpProps {
   updateFormSignUp: Function;
