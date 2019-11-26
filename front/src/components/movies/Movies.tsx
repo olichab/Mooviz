@@ -69,7 +69,7 @@ class Movies extends Component<IMoviesProps> {
         {moviesList.length === 0 && (
           <div className="row justify-content-center">
             <p className="m-2 noMovieMessage text-center">
-              Oups...
+              Oops...
               <br />
               There is still no movie in your collection
             </p>
@@ -79,7 +79,7 @@ class Movies extends Component<IMoviesProps> {
           || moviesListFilteredByCategories.length === 0) && (
           <div className="row justify-content-center">
             <p className="m-2 noMovieMessage text-center">
-              Oups...
+              Oops...
               <br />
               No movie corresponds to your search
             </p>
