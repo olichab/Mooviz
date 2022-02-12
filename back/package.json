@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
-    "ajv": "^6.10.2",
+    "ajv": "^6.12.3",
     "ajv-errors": "^1.0.1",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
